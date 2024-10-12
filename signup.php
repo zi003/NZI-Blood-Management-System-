@@ -13,12 +13,6 @@ ini_set('display_errors', 1);
   $emailaddress = $_POST['email'];
   
 
-  if(empty($firstname)||empty($lastname)||empty($password)||empty($bloodgroup)||empty($phonenumber)||empty($emailaddress))
-  {
-    $error_message = "Please fill up all fields!";
-  }
-  else{
-
     $con = new mysqli('localhost','root','','nzi blood management system');
 
     if ($con->connect_error) {
@@ -43,7 +37,7 @@ ini_set('display_errors', 1);
                     margin: 0;
                 }
                 .message {
-                    background-color: #4CAF50; /* Green */
+                    background-color: #4CAF50;  //green colour for success message
                     color: white;
                     padding: 20px;
                     border-radius: 5px;
@@ -70,20 +64,19 @@ ini_set('display_errors', 1);
                     countdownElement.innerHTML = countdown;
                     if (countdown <= 0) {
                         clearInterval(this);
-                        window.location.href = 'login.html';  // Change to your actual login page path
+                        window.location.href = 'login.html';  // redirecting to login page
                     }
                 }, 1000);
             </script>
         </body>
         </html>
         ";
-        exit(); // Make sure to exit after displaying the message
+        exit(); 
     }
     else{
          die("Error!");
     }
     $stmt->close();
     $con->close();
-  }
-
+  
 ?>
