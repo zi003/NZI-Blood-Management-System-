@@ -19,10 +19,15 @@ ini_set('display_errors', 1);
         die("Connection failed: " . $con->connect_error);
     }
     
-    $stmt = $con->prepare("insert into person (Firstname, Lastname, password, blood_group, phone_number, email_address) VALUES (?,?,?,?,?,?)");
-    $stmt->bind_param("ssssss",$firstname,$lastname,$hashed_password,$bloodgroup,$phonenumber,$emailaddress);
+      $stmt = $con->prepare("insert into person (Firstname, Lastname, password, blood_group, phone_number, email_address) VALUES (?,?,?,?,?,?)");
+      $stmt->bind_param("ssssss",$firstname,$lastname,$hashed_password,$bloodgroup,$phonenumber,$emailaddress);
 
     if($stmt->execute()){
+         //$to = $emailaddress;            // email address of person who registered
+         //$subject = "Welcome to NZI Blood Management System"; // Subject of the email
+         //$message = "Thank You for Signing Up to NZI Blood Management System!"; // Email body message
+         //$headers = "From: zuhayer.islam@northsouth.edu";  // my email address
+        //mail($to,$subject,$message,$headers);
         echo "
         <html>
         <head>
