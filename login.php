@@ -24,14 +24,14 @@
         if($hashedpass){ //checks if any password was retrieved
         if(password_verify($password,$hashedpass))
         {
-            echo"Login Successful!";
+            echo"<script> alert('Login Successful!'); </script>";
         }
         else{
-            echo"Incorrect Password!";
+            echo"<script> alert('Incorrect Password!!'); </script>";
         }
         } 
         else{
-            echo"Email not signed up! Please sign up!";
+            echo"<script> alert('You havent signed up, please sign up before logging in!'); </script>";
         }
     }
     else{

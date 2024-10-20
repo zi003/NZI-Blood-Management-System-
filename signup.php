@@ -31,7 +31,7 @@ ini_set('display_errors', 1);
 
     if($stmt->execute()){
         
-
+        //mail to user for successfully logging in
         $mail = new PHPMailer(true);
         $mail -> isSMTP();
 
