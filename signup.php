@@ -19,6 +19,8 @@ ini_set('display_errors', 1);
   $phonenumber = $_POST['phone-number'];
   $emailaddress = $_POST['email'];
   $person_type = $_POST['person_type'];
+  $last_donation_date = $_POST['DOD'];
+
 
     $con = new mysqli('localhost','root','','nzi blood management system');
 
@@ -28,9 +30,17 @@ ini_set('display_errors', 1);
     
       $stmt = $con->prepare("insert into person (Firstname, Lastname, password, blood_group, phone_number, email_address, person_type) VALUES (?,?,?,?,?,?,?)");
       $stmt->bind_param("sssssss",$firstname,$lastname,$hashed_password,$bloodgroup,$phonenumber,$emailaddress,$person_type);
+      $stmt->execute();
 
-    if($stmt->execute()){
-        
+      $id = $con->insert_id;
+      if($person_type == "Donor"){
+        $stmt = $con->prepare("insert into donor (id,last_donation_date) values(?,?)");
+        $stmt->bind_param("is",$id,$last_donation_date);
+      }
+      $stmt->execute();
+
+   // if($stmt->execute()){
+        /*
         //mail to user for successfully logging in
         $mail = new PHPMailer(true);
         $mail -> isSMTP();
@@ -69,7 +79,7 @@ ini_set('display_errors', 1);
     }
     else{
          die("Error!");
-    }
+    }*/
     $stmt->close();
     $con->close();
   
