@@ -20,7 +20,7 @@ ini_set('display_errors', 1);
   $emailaddress = $_POST['email'];
   $person_type = $_POST['person_type'];
   $last_donation_date = $_POST['DOD'];
-
+  $patient_type = $_POST['frequency'];
 
     $con = new mysqli('localhost','root','','nzi blood management system');
 
@@ -37,10 +37,13 @@ ini_set('display_errors', 1);
         $stmt = $con->prepare("insert into donor (id,last_donation_date) values(?,?)");
         $stmt->bind_param("is",$id,$last_donation_date);
       }
-      $stmt->execute();
+      else if($person_type == "Patient"){
+        $stmt = $con->prepare("insert into patient (id,patient_type) values(?,?)");
+        $stmt->bind_param("is",$id,$patient_type);
+      }
 
-   // if($stmt->execute()){
-        /*
+     if($stmt->execute()){
+        
         //mail to user for successfully logging in
         $mail = new PHPMailer(true);
         $mail -> isSMTP();
@@ -57,15 +60,31 @@ ini_set('display_errors', 1);
 
         $mail->isHTML(true);
 
-        $mail->Subject = "NZI Blood Management System Registration Successful!";
-
+        if($person_type == "Donor"){
+        $mail->Subject = "NZI Blood Management Donor Registration Successful!";
+        
+        
         $mail->Body = "Thank You for registering into NZI Blood Management System!<br>
-                       You are now ready to get blood or donate to save lives.<br><br><br>
-
+                       You can now donate blood to save lives.<br><br><br>
+                        
                        Thank You.<br>
                        -NZI Team.<br>
                        ";
- 
+        
+        }
+        else if($person_type == "Patient"){
+            $mail->Subject = "NZI Blood Management Patient Registration Successful!";
+            
+            
+            $mail->Body = "Thank You for registering into NZI Blood Management System!<br>
+                           You can now receive blood through registered donors.<br><br><br>
+    
+                           Thank You.<br>
+                           -NZI Team.<br>
+                           ";
+            
+            }
+
         $mail->send();
         
         echo '<script>
@@ -79,7 +98,7 @@ ini_set('display_errors', 1);
     }
     else{
          die("Error!");
-    }*/
+    }
     $stmt->close();
     $con->close();
   
