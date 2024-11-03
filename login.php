@@ -27,11 +27,15 @@
             echo"<script> alert('Login Successful!'); </script>";
         }
         else{
-            echo"<script> alert('Incorrect Password!!'); </script>";
+            echo'<script> alert("Incorrect Password!!"); 
+            window.location.href = "Login.html"
+            </script>';
         }
         } 
         else{
-            echo"<script> alert('You havent signed up, please sign up before logging in!'); </script>";
+            echo'<script> alert("You havent signed up, please sign up before logging in!");
+             window.location.href = "Login.html"
+             </script>';
         }
     }
     else{
