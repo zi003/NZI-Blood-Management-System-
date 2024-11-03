@@ -18,7 +18,7 @@ ini_set('display_errors', 1);
   $bloodgroup = $_POST['blood-group'];
   $phonenumber = $_POST['phone-number'];
   $emailaddress = $_POST['email'];
-  
+  $person_type = $_POST['person_type'];
 
     $con = new mysqli('localhost','root','','nzi blood management system');
 
@@ -26,8 +26,8 @@ ini_set('display_errors', 1);
         die("Connection failed: " . $con->connect_error);
     }
     
-      $stmt = $con->prepare("insert into person (Firstname, Lastname, password, blood_group, phone_number, email_address) VALUES (?,?,?,?,?,?)");
-      $stmt->bind_param("ssssss",$firstname,$lastname,$hashed_password,$bloodgroup,$phonenumber,$emailaddress);
+      $stmt = $con->prepare("insert into person (Firstname, Lastname, password, blood_group, phone_number, email_address, person_type) VALUES (?,?,?,?,?,?,?)");
+      $stmt->bind_param("sssssss",$firstname,$lastname,$hashed_password,$bloodgroup,$phonenumber,$emailaddress,$person_type);
 
     if($stmt->execute()){
         
