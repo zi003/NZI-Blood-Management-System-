@@ -1,10 +1,15 @@
+<?php   
+  session_start();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donor Portal</title>
-    <link rel="stylesheet" href="Portal(D).html">
+    <link rel="stylesheet" href="Portal(D).css">
 </head>
 <body>
     <div class="portal-container">
@@ -14,11 +19,10 @@
         <div class="profile-section">
             <h2>Your Profile</h2>
             <div class="profile-bio">
-                <p><strong>Name:</strong> John Doe</p>
-                <p><strong>Blood Group:</strong> A+</p>
-                <p><strong>Email:</strong> johndoe@example.com</p>
-                <p><strong>Phone:</strong> +123 456 7890</p>
-                <p><strong>Available for Donation:</strong> Yes</p>
+                <p><strong>Name:</strong> <?php echo $_SESSION['name'] ?></p>
+                <p><strong>Blood Group:</strong> <?php echo $_SESSION['blood_grp'] ?></p>
+                <p><strong>Email:</strong> <?php echo $_SESSION['email'] ?></p>
+                <p><strong>Phone:</strong> <?php echo $_SESSION['phone_num'] ?></p>
             </div>
             
             <!-- Action Buttons -->

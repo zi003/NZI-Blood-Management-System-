@@ -1,8 +1,10 @@
 <?php
+   session_start();
    $email = '';
    $password = '';
    $email = $_POST['email'];
    $password = $_POST['password'];
+   $_SESSION['email'] = $email;
 
 
    $con = new mysqli('localhost','root','','nzi blood management system'); 
@@ -24,7 +26,10 @@
         if($hashedpass){ //checks if any password was retrieved
         if(password_verify($password,$hashedpass))
         {
-            echo"<script> alert('Login Successful!'); </script>";
+            echo'<script> alert("Login Successful!"); 
+                 window.location.href = "DonorBio.php"
+            </script>';
+
         }
         else{
             echo'<script> alert("Incorrect Password!!"); 
