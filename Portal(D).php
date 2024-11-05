@@ -1,5 +1,6 @@
 <?php   
   session_start();
+  
 ?>
 
 
@@ -27,14 +28,76 @@
             
             <!-- Action Buttons -->
             <div class="action-buttons">
-                <button onclick="viewPatientList()">View Patient List</button>
-                <button onclick="viewUpcomingDonations()">Upcoming Donations</button>
-                <button onclick="viewDonationRequests()">Donation Requests</button>
+
+            <form method="post">
+                <button name="action" value="viewPatientList">View Patient List</button>
+                <button name="action" value="viewUpcomingDonations">Upcoming Donations</button>
+                <button name="action" value="viewDonationRequests">Donation Requests</button>
+            </form>
+
             </div>
         </div>
 
-        <!-- Script for buttons (for demonstration purposes) -->
-        <script>
+        <div class = "action result">
+         <?php  
+
+          $con = new mysqli('localhost','root','','nzi blood management system');
+          
+          function viewPatientList($con){
+            
+          $stmt = $con->prepare("select * from person");
+          $stmt->execute();
+
+          $result = $stmt->get_result();
+
+          if($result->num_rows>0)
+          {
+            if ($result->num_rows > 0) {
+                // Output the data in a table format
+                echo "<table>";
+                echo "<tr><th> First Name </th><th>   Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th></tr>";
+                
+                // Fetch and output each row of data
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['Firstname']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['Lastname']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['blood_group']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['phone_number']) . "</td>";
+                    echo "</tr>";
+                }
+                
+                echo "</table>";
+            } else {
+                echo "No results found.";
+            }
+        }
+    }
+            
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $action = $_POST['action'] ?? '';
+                switch ($action) {
+                    case 'viewPatientList':
+                        viewPatientList($con);
+                        break;
+                    case 'viewUpcomingDonations':
+                        // Call your upcoming donations function
+                        break;
+                    case 'viewDonationRequests':
+                        // Call your donation requests function
+                        break;
+                
+                    }
+
+
+
+          }
+        
+        
+        ?>
+       <!-- </div>
+         Script for buttons (for demonstration purposes) -->
+        <!--<script>
             function viewPatientList() {
                 alert("Viewing Patient List...");
             }
@@ -45,6 +108,7 @@
                 alert("Viewing Donation Requests...");
             }
         </script>
-    </div>
+    </div>-->
+       
 </body>
 </html>
