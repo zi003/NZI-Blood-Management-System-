@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation Dashboard</title>
+    <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Blood Donation</h2>
+            <button onclick="showPage('dashboard')">Dashboard</button>
+            <button onclick="showPage('donor')">Donor</button>
+            <button onclick="showPage('patient')">Patient</button>
+            <button onclick="logout()">Logout</button> <!-- Logout Button -->
+        </div>
+
+        <!-- Content Area -->
+        <div class="content">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page">
+                <h2>Dashboard</h2>
+                <p>Donation/Consumption History:</p>
+                <ul>
+                    <li>Times Donated: 5</li>
+                    <li>Times Received: 3</li>
+                </ul>
+            </div>
+
+            <!-- Donor Page -->
+            <div id="donor" class="page" style="display:none;">
+                <h2>Donor Page</h2>
+                <p>Patient Requests:</p>
+                <ul>
+                    <li>
+                        <span>John Doe (Blood Group: A+)</span>
+                        <button>Accept</button>
+                        <button>Decline</button>
+                    </li>
+                    <!-- More patients can be added similarly -->
+                </ul>
+            </div>
+
+            <!-- Patient Page -->
+            <div id="patient" class="page" style="display:none;">
+                <h2>Patient Page</h2>
+                <p>Available Donors:</p>
+                <ul>
+                    <li>
+                        <span>Jane Smith (Blood Group: O+)</span>
+                        <button>Request Friend</button>
+                    </li>
+                    <!-- More donors can be added similarly -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
+            document.getElementById(pageId).style.display = 'block';
+        }
+
+        function logout() {
+            alert("You have logged out.");
+            // Add actual logout functionality here if needed
+        }
+    </script>
+</body>
+</html>
