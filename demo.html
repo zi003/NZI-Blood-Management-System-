@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blood Donation Dashboard</title>
+    <title>Blood Donation Patient Dashboard</title>
     <link rel="stylesheet" href="demo.css">
 </head>
 <body>
@@ -11,46 +11,68 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <h2>Blood Donation</h2>
-            <button onclick="showPage('dashboard')">Dashboard</button>
-            <button onclick="showPage('donor')">Donor</button>
-            <button onclick="showPage('patient')">Patient</button>
-            <button onclick="logout()">Logout</button> <!-- Logout Button -->
+            <button onclick="showPage('patientProfile')">My Profile</button>
+            <button onclick="showPage('createRequest')">Create Request</button>
+            <button onclick="showPage('donorList')">Donor List</button>
+            <button onclick="logout()">Logout</button>
         </div>
 
         <!-- Content Area -->
         <div class="content">
-            <!-- Dashboard Page -->
-            <div id="dashboard" class="page">
-                <h2>Dashboard</h2>
-                <p>Donation/Consumption History:</p>
+            <!-- My Profile Page -->
+            <div id="patientProfile" class="page">
+                <h2>My Profile</h2>
+                <p>Account Information:</p>
                 <ul>
-                    <li>Times Donated: 5</li>
-                    <li>Times Received: 3</li>
+                    <li>Name: Jane Doe</li>
+                    <li>Email: jane.doe@example.com</li>
+                    <li>Phone Number: +123456789</li>
                 </ul>
             </div>
 
-            <!-- Donor Page -->
-            <div id="donor" class="page" style="display:none;">
-                <h2>Donor Page</h2>
-                <p>Patient Requests:</p>
-                <ul>
-                    <li>
-                        <span>John Doe (Blood Group: A+)</span>
-                        <button>Accept</button>
-                        <button>Decline</button>
-                    </li>
-                    <!-- More patients can be added similarly -->
-                </ul>
+            <!-- Create Request Page -->
+            <div id="createRequest" class="page" style="display:none;">
+                <h2>Create Request</h2>
+                <form>
+                    <label for="requestType">Request Type:</label>
+                    <select id="requestType" name="requestType">
+                        <option value="blood">Blood</option>
+                        <option value="plasma">Plasma</option>
+                    </select>
+
+                    <label for="bloodGroup">Blood Group:</label>
+                    <select id="bloodGroup" name="bloodGroup">
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+
+                    <label for="time">Time:</label>
+                    <input type="time" id="time" name="time" required>
+
+                    <label for="place">Place:</label>
+                    <input type="text" id="place" name="place" placeholder="Enter location" required>
+
+                    <button type="submit">Submit Request</button>
+                </form>
             </div>
 
-            <!-- Patient Page -->
-            <div id="patient" class="page" style="display:none;">
-                <h2>Patient Page</h2>
+            <!-- Donor List Page -->
+            <div id="donorList" class="page" style="display:none;">
+                <h2>Donor List</h2>
                 <p>Available Donors:</p>
                 <ul>
                     <li>
-                        <span>Jane Smith (Blood Group: O+)</span>
-                        <button>Request Friend</button>
+                        <span>John Smith (Blood Group: B+)</span>
+                        <button>Request Donation</button>
                     </li>
                     <!-- More donors can be added similarly -->
                 </ul>
@@ -71,3 +93,4 @@
     </script>
 </body>
 </html>
+
