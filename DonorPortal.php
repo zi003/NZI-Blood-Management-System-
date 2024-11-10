@@ -1,4 +1,5 @@
 <?php
+
     session_start();
 ?>
 
@@ -15,16 +16,27 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <h2>Blood Donation</h2>
-            <button onclick="showPage('dashboard')">My Profile</button>
-            <button onclick="showPage('donorRequest')">Donor Requests</button>
-            <button onclick="showPage('patientList')">Patient List</button>
-            <button onclick="logout()">Logout</button>
+            <form method="post">
+                <button type = "submit" name="action" value="dashboard">My Profile</button>
+                <button type = "submit" name="action" value="donorRequest">Donor Requests</button>
+                <button type = "submit" name="action" value="patientList">Patient List</button>
+                <button type = "button" onclick="logout()">Logout</button>
+            </form>
+           
         </div>
 
+        <?php 
+         $page = isset($_POST['action'])? $_POST['action']:'dashboard';
+
+        ?>
         <!-- Content Area -->
+    
         <div class="content">
+            <div id = "dashboard">
+
+        
             <!-- My Profile (Dashboard) Page -->
-            <div id="dashboard" class="page">
+             <?php if($page == "dashboard"): ?>
                 <h2>My Profile</h2>
                 <p>Account Information:</p>
                 <ul>
@@ -36,13 +48,11 @@
                 <h3>Blood Donation History:</h3>
                 <ul>
                     <li>Donated on: </li>
-                    <li>Donated on: </li>
                     <!-- Add more history records as needed -->
                 </ul>
-            </div>
-
+           
             <!-- Donor Requests Page -->
-            <div id="donorRequest" class="page" style="display:none;">
+            <?php elseif($page == "donorRequest"): ?>
                 <h2>Donor Requests</h2>
                 <p>Patient Requests:</p>
                 <ul>
@@ -53,10 +63,9 @@
                     </li>
                     <!-- More patients can be added similarly -->
                 </ul>
-            </div>
 
             <!-- Patient List Page -->
-            <div id="patientList" class="page" style="display:none;">
+            <?php elseif($page == "patientList"): ?>
                 <h2>Patient List</h2>
                 <p>Available Patients:</p>
                 <ul>
@@ -66,15 +75,17 @@
                     </li>
                     <!-- More donors can be added similarly -->
                 </ul>
+            <?php endif; ?>
+           
             </div>
-        </div>
-    </div>
+         </div>
 
+       
     <script>
-        function showPage(pageId) {
+       /* function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
             document.getElementById(pageId).style.display = 'block';
-        }
+        }*/
 
         function logout() {
             alert("You have logged out.");

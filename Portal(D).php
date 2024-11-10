@@ -81,10 +81,10 @@
                         viewPatientList($con);
                         break;
                     case 'viewUpcomingDonations':
-                        // Call your upcoming donations function
+                        // Call upcoming donations function
                         break;
                     case 'viewDonationRequests':
-                        // Call your donation requests function
+                        // Call donation requests function
                         break;
                 
                     }
