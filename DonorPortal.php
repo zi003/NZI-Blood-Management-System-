@@ -89,7 +89,8 @@
 
         function logout() {
             alert("You have logged out.");
-            window.location.href = "Login.html";
+            window.location.href = "Logout.php";
+            
         }
     </script>
 </body>
