@@ -1,3 +1,7 @@
+<?php
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,15 +28,15 @@
                 <h2>My Profile</h2>
                 <p>Account Information:</p>
                 <ul>
-                    <li>Name: John Doe</li>
-                    <li>Phone Number: +123456789</li>
-                    <li>Account ID: 12345</li>
-                    <li>Last Blood Donation Date: 2023-11-08</li>
+                    <li>Name:<?php echo $_SESSION['name'] ?> </li>
+                    <li>Phone Number: <?php echo $_SESSION['phone_num'] ?></li>
+                    <li>Blood Group: <?php echo $_SESSION['blood_grp'] ?></li>
+                   <!-- <li>Last Blood Donation Date: 2023-11-08</li>-->
                 </ul>
                 <h3>Blood Donation History:</h3>
                 <ul>
-                    <li>Donated on: 2023-10-01</li>
-                    <li>Donated on: 2023-08-15</li>
+                    <li>Donated on: </li>
+                    <li>Donated on: </li>
                     <!-- Add more history records as needed -->
                 </ul>
             </div>
@@ -44,7 +48,7 @@
                 <ul>
                     <li>
                         <span>John Smith (Blood Group: B+)</span>
-                        <button>Donate</button>
+                        <button>Accept</button>
                         <button>Decline</button>
                     </li>
                     <!-- More patients can be added similarly -->
@@ -74,7 +78,7 @@
 
         function logout() {
             alert("You have logged out.");
-            // Add actual logout functionality here if needed
+            window.location.href = "Login.html";
         }
     </script>
 </body>

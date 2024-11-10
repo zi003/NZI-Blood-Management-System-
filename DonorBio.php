@@ -18,7 +18,7 @@
     $_SESSION['blood_grp'] = $blood_group;
     $_SESSION['phone_num'] = $phone_num;
 
-    header("Location: Portal(D).php");
+    header("Location: DonorPortal.php");
     exit();
  
  }
