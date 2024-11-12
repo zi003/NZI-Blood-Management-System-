@@ -15,21 +15,34 @@
    }
     else{
 
-    $stmt = $con->prepare("select password from person where email_address = ?"); //selecting passwords for the email
+    $stmt = $con->prepare("select person_type, password from person where email_address = ?"); //selecting passwords for the email
     $stmt->bind_param("s",$email);
 
     if($stmt->execute())
     {
-        $stmt->bind_result($hashedpass); //retrieving hashedpassword from table
+        $stmt->bind_result($person_type, $hashedpass); //retrieving hashedpassword from table
         $stmt->fetch();
 
         if($hashedpass){ //checks if any password was retrieved
         if(password_verify($password,$hashedpass))
         {
-            echo'<script> alert("Login Successful!"); 
-                 window.location.href = "DonorBio.php"
-            </script>';
+            ?>
 
+
+          <script> 
+           alert("Login Successful!"); 
+
+          <?php if($person_type == "Donor") { ?>
+             window.location.href = "DonorBio.php"; 
+           <?php } else if($person_type == "Patient") { ?>
+             window.location.href = "PatientBio.php"; 
+        
+        <?php } ?>
+      </script>
+
+   
+
+       <?php 
         }
         else{
             echo'<script> alert("Incorrect Password!!"); 

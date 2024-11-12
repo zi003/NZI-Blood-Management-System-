@@ -1,3 +1,7 @@
+<?php
+   session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,27 +15,39 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <h2>Blood Donation</h2>
-            <button onclick="showPage('patientProfile')">My Profile</button>
-            <button onclick="showPage('createRequest')">Create Request</button>
-            <button onclick="showPage('donorList')">Donor List</button>
-            <button onclick="logout()">Logout</button>
+            <form method = "post">
+            <button type = "submit" name="action" value="dashboard">My Profile</button>
+            <button type = "submit" name="action" value="createRequest">Create Requests</button>
+            <button type = "submit" name="action" value="donorList">Donor List</button>
+            <button type = "button" onclick="logout()">Logout</button>
+            </form>
         </div>
+
+        <?php 
+        $page = isset($_POST['action'])? $_POST['action']:'dashboard';
+       ?>
 
         <!-- Content Area -->
         <div class="content">
             <!-- My Profile Page -->
-            <div id="patientProfile" class="page">
+            <!--<div id="patientProfile" class="page">-->
+            <?php if($page == "dashboard"): ?>
                 <h2>My Profile</h2>
                 <p>Account Information:</p>
                 <ul>
-                    <li>Name: Jane Doe</li>
-                    <li>Email: jane.doe@example.com</li>
-                    <li>Phone Number: +123456789</li>
+                    <li>Name: <?php echo $_SESSION['name']  ?></li>
+                    <li>Phone Number:<?php echo $_SESSION['phone_num']?> </li>
+                    <li>Blood Group:<?php echo $_SESSION['blood_grp']?> </li>
+                    <li>Location:<?php echo $_SESSION['location']?> </li>
+                    <li>Patient Type:<?php echo $_SESSION['patient_type']?> </li>
+                    <li></li>
                 </ul>
             </div>
 
             <!-- Create Request Page -->
-            <div id="createRequest" class="page" style="display:none;">
+             
+            <?php elseif($page == "createRequest"): ?>
+            <!--<div id="createRequest" class="page" style="display:none;">-->
                 <h2>Create Request</h2>
                 <form>
                     <label for="requestType">Request Type:</label>
@@ -66,7 +82,8 @@
             </div>
 
             <!-- Donor List Page -->
-            <div id="donorList" class="page" style="display:none;">
+            <?php elseif($page == "donorList"): ?>
+           <!-- <div id="donorList" class="page" style="display:none;">-->
                 <h2>Donor List</h2>
                 <p>Available Donors:</p>
                 <ul>
@@ -76,19 +93,21 @@
                     </li>
                     <!-- More donors can be added similarly -->
                 </ul>
+
             </div>
+            <?php endif; ?>
         </div>
     </div>
 
     <script>
-        function showPage(pageId) {
+      /*  function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
             document.getElementById(pageId).style.display = 'block';
-        }
+        }*/
 
         function logout() {
             alert("You have logged out.");
-            // Add actual logout functionality here if needed
+            window.location.href = "Logout.php";
         }
     </script>
 </body>

@@ -43,11 +43,12 @@
                     <li>Name:<?php echo $_SESSION['name'] ?> </li>
                     <li>Phone Number: <?php echo $_SESSION['phone_num'] ?></li>
                     <li>Blood Group: <?php echo $_SESSION['blood_grp'] ?></li>
-                   <!-- <li>Last Blood Donation Date: 2023-11-08</li>-->
+                    <li>Location:<?php echo $_SESSION['location'] ?> </li>
+                    <li>Last Blood Donation Date:<?php echo $_SESSION['last_dondate'] ?> </li>
                 </ul>
                 <h3>Upcoming Donations:</h3>
                 <ul>
-                    <li>Donated on: </li>
+                   <!-- <li>Donated on: </li> -->
                     <!-- Add more history records as needed -->
                 </ul>
            
