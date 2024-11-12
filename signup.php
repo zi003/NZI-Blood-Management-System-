@@ -21,6 +21,7 @@ ini_set('display_errors', 1);
   $person_type = $_POST['person_type'];
   $last_donation_date = $_POST['DOD'];
   $patient_type = $_POST['frequency'];
+  $location = $_POST['location'];
 
     $con = new mysqli('localhost','root','','nzi blood management system');
 
@@ -28,8 +29,8 @@ ini_set('display_errors', 1);
         die("Connection failed: " . $con->connect_error);
     }
     
-      $stmt = $con->prepare("insert into person (Firstname, Lastname, password, blood_group, phone_number, email_address, person_type) VALUES (?,?,?,?,?,?,?)");
-      $stmt->bind_param("sssssss",$firstname,$lastname,$hashed_password,$bloodgroup,$phonenumber,$emailaddress,$person_type);
+      $stmt = $con->prepare("insert into person (Firstname, Lastname, password, blood_group, phone_number, email_address, person_type,location) VALUES (?,?,?,?,?,?,?,?)");
+      $stmt->bind_param("ssssssss",$firstname,$lastname,$hashed_password,$bloodgroup,$phonenumber,$emailaddress,$person_type,$location);
       $stmt->execute();
 
       $id = $con->insert_id;
@@ -44,6 +45,7 @@ ini_set('display_errors', 1);
 
      if($stmt->execute()){
         
+        /*
         //mail to user for successfully logging in
         $mail = new PHPMailer(true);
         $mail -> isSMTP();
@@ -86,7 +88,7 @@ ini_set('display_errors', 1);
             }
 
         $mail->send();
-        
+        */
         echo '<script>
         
          alert("Registration Succesful, You have been mailed! Log in to continue");

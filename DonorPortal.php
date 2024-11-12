@@ -45,7 +45,7 @@
                     <li>Blood Group: <?php echo $_SESSION['blood_grp'] ?></li>
                    <!-- <li>Last Blood Donation Date: 2023-11-08</li>-->
                 </ul>
-                <h3>Blood Donation History:</h3>
+                <h3>Upcoming Donations:</h3>
                 <ul>
                     <li>Donated on: </li>
                     <!-- Add more history records as needed -->
@@ -68,11 +68,53 @@
             <?php elseif($page == "patientList"): ?>
                 <h2>Patient List</h2>
                 <p>Available Patients:</p>
+               
+                <!--
                 <ul>
                     <li>
                         <span>Jane Doe (Blood Group: O+)</span>
                         <button>Donate</button>
-                    </li>
+                    </li> -->
+        <?php
+          $con = new mysqli('localhost','root','','nzi blood management system');
+            
+          $stmt = $con->prepare("select * from person where person_type = 'Patient'");
+          $stmt->execute();
+
+          $result = $stmt->get_result();
+
+          if($result->num_rows>0)
+          {
+            if ($result->num_rows > 0) {
+                // Output the data in a table format
+                echo "<table>";
+                echo "<tr><th> First Name </th><th>   Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>    Location  </th></tr>";
+                
+                // Fetch and output each row of data
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['Firstname']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['Lastname']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['blood_group']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['phone_number']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['Location']) . "</td>";
+
+                    echo "<td>";
+                    echo "<form action='donate.php' method='post'>";
+                    echo "<input type='hidden' name='patient_id' value='" . htmlspecialchars($row['ID']) . "'>";
+                    echo "<input type='submit' value='Donate'>";
+                    echo "</form>";
+                    echo "<td";
+
+                    echo "</tr>";
+                }
+                
+                echo "</table>";
+            } else {
+                echo "No results found.";
+            }
+        }
+       ?>
                     <!-- More donors can be added similarly -->
                 </ul>
             <?php endif; ?>
