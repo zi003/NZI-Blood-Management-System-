@@ -79,7 +79,7 @@
         <?php
           $con = new mysqli('localhost','root','','nzi blood management system');
             
-          $stmt = $con->prepare("select * from person where person_type = 'Patient'");
+          $stmt = $con->prepare("select p.ID,Firstname, Lastname, phone_number, r.blood_group, r.blood_type, r.location,r.donation_date, r.donation_time from person as p join bloodrequest as r on p.ID = r.PID");
           $stmt->execute();
 
           $result = $stmt->get_result();
@@ -89,7 +89,7 @@
             if ($result->num_rows > 0) {
                 // Output the data in a table format
                 echo "<table>";
-                echo "<tr><th> First Name </th><th>   Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>    Location  </th></tr>";
+                echo "<tr><th> First Name </th><th>  Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>    Donation Location  </th><th>    Donation Date  </th><th>    Donation Time </th><th>    Blood Type  </th></tr>";
                 
                 // Fetch and output each row of data
                 while ($row = $result->fetch_assoc()) {
@@ -98,7 +98,10 @@
                     echo "<td>" . htmlspecialchars($row['Lastname']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['blood_group']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['phone_number']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['Location']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['location']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['donation_date']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['donation_time']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['blood_type']) . "</td>";
 
                     echo "<td>";
                     echo "<form action='donate.php' method='post'>";

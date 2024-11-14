@@ -49,11 +49,14 @@
             <?php elseif($page == "createRequest"): ?>
             <!--<div id="createRequest" class="page" style="display:none;">-->
                 <h2>Create Request</h2>
-                <form>
-                    <label for="requestType">Request Type:</label>
+                <form action = "requestBlood.php" method = "POST">
+                    <!-- added to identify the form -->
+                    <input type="hidden" name="form_type" value="create_request">
+
+                    <label for="requestType">Blood Type:</label>
                     <select id="requestType" name="requestType">
                         <option value="blood">Blood</option>
-                        <option value="plasma">Plasma</option>
+                        <option value="platelet">Platelet</option>
                     </select>
 
                     <label for="bloodGroup">Blood Group:</label>
@@ -77,10 +80,10 @@
                     <label for="place">Place:</label>
                     <input type="text" id="place" name="place" placeholder="Enter location" required>
 
-                    <button type="submit">Submit Request</button>
+                    <button type="submit" name = "submit_request">Submit Request</button>
                 </form>
             </div>
-
+        
             <!-- Donor List Page -->
             <?php elseif($page == "donorList"): ?>
            <!-- <div id="donorList" class="page" style="display:none;">-->
