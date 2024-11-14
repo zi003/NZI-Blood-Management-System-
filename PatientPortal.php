@@ -1,5 +1,17 @@
 <?php
    session_start();
+   
+   $id = $_SESSION['id'];
+   $con = new mysqli('localhost','root','','nzi blood management system');
+   $stmt = $con->prepare("select * from bloodrequest where PID = ?");
+   $stmt->bind_param("s",$id);
+
+   $stmt->execute();
+   $result = $stmt->get_result();
+   
+   $stmt->close();
+   $con->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +29,9 @@
             <h2>Blood Donation</h2>
             <form method = "post">
             <button type = "submit" name="action" value="dashboard">My Profile</button>
+            <?php if($result->num_rows==0 || $_SESSION['patient_type'] == "Regular"):?>
             <button type = "submit" name="action" value="createRequest">Create Requests</button>
+            <?php endif; ?>
             <button type = "submit" name="action" value="donorList">Donor List</button>
             <button type = "button" onclick="logout()">Logout</button>
             </form>
@@ -41,6 +55,12 @@
                     <li>Location:<?php echo $_SESSION['location']?> </li>
                     <li>Patient Type:<?php echo $_SESSION['patient_type']?> </li>
                     <li></li>
+                </ul>
+
+                <h3>Upcoming Donations:</h3>
+                <ul>
+                   <!-- <li>Donated on: </li> -->
+                    <!-- Add more history records as needed -->
                 </ul>
             </div>
 
