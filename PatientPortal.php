@@ -12,6 +12,11 @@
    $stmt->close();
    $con->close();
 
+   $current_date = date('Y-m-d');
+
+   $min_date = date('Y-m-d',strtotime('+1 day'));
+   $max_date = date('Y-m-d',strtotime('+3 months'));
+
 ?>
 
 <!DOCTYPE html>
@@ -92,7 +97,12 @@
                     </select>
 
                     <label for="date">Date:</label>
-                    <input type="date" id="date" name="date" required>
+                    <input type="date" id="date" name="date" 
+                       
+                    min = <?php echo $min_date; ?>
+                    max = <?php echo $max_date; ?>
+
+                    required>
 
                     <label for="time">Time:</label>
                     <input type="time" id="time" name="time" required>

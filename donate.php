@@ -13,8 +13,18 @@
    $stmt = $con->prepare("insert into donations VALUES (?,?,?,?)");
    $stmt->bind_param("iiss",$donor_id, $patient_id, $donation_date, $donation_time);
 
+   
+
    if($stmt->execute())
    {
+
+    $stmt->close();
+
+    $stmt = $con->prepare("update person set engaged = true where ID = ? or ID = ?");
+    $stmt->bind_param("ii",$patient_id,$donor_id);
+
+    
+    if($stmt->execute()){
     
      echo'<script>
        
@@ -24,6 +34,7 @@
      </script>';
 
      exit();
+    }
    }
    else{
     die("Error!");

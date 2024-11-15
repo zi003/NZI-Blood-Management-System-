@@ -113,7 +113,7 @@
           include 'connect.php';
 
           
-          $stmt = $con->prepare("select p.ID,Firstname, Lastname, phone_number, r.blood_group, r.blood_type, r.location,r.donation_date, r.donation_time from person as p join bloodrequest as r on p.ID = r.PID");
+          $stmt = $con->prepare("select p.ID,Firstname, Lastname, phone_number, engaged, r.blood_group, r.blood_type, r.location,r.donation_date, r.donation_time from person as p join bloodrequest as r on p.ID = r.PID");
           $stmt->execute();
 
           $result = $stmt->get_result();
@@ -127,6 +127,8 @@
                 
                 // Fetch and output each row of data
                 while ($row = $result->fetch_assoc()) {
+                    if($row['engaged']==true)
+                       continue;
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['Firstname']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Lastname']) . "</td>";
