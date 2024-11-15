@@ -1,6 +1,7 @@
 <?php
 
     session_start();
+
 ?>
 
 <!DOCTYPE html>
@@ -47,10 +48,41 @@
                     <li>Last Blood Donation Date:<?php echo $_SESSION['last_dondate'] ?> </li>
                 </ul>
                 <h3>Upcoming Donations:</h3>
-                <ul>
-                   <!-- <li>Donated on: </li> -->
-                    <!-- Add more history records as needed -->
-                </ul>
+                <?php 
+
+                   include 'connect.php';
+
+                   $stmt = $con->prepare("select p.Firstname, p.Lastname, p.phone_number, don.PID, br.donation_date, br.donation_time, br.location, br.blood_type from donor as d join donations as don on (d.id = don.DID) join bloodrequest as br on (br.PID = don.PID) join person as p on (br.PID = p.ID)");
+                   $stmt->execute();
+                   $result = $stmt->get_result();
+
+                   if($result->num_rows>0)
+                   {
+                    echo "<table>";
+                    echo "<tr><th> First Name </th><th> Last Name </th><th> Contact Number </th><th> Donation Date  </th><th>  Donation Time  </th><th>  Donation Location  </th><th>  Blood Type </th></tr>";
+                
+                // Fetch and output each row of data
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['Firstname']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['Lastname']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['phone_number']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['donation_date']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['donation_time']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['location']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['blood_type']) . "</td>";
+                    echo "</tr>";
+                
+                
+                   echo "</table>";
+
+                   }
+
+                }
+                $stmt->close();
+                $con->close();
+                                
+            ?>
            
             <!-- Donor Requests Page -->
             <?php elseif($page == "donorRequest"): ?>
@@ -77,8 +109,10 @@
                         <button>Donate</button>
                     </li> -->
         <?php
-          $con = new mysqli('localhost','root','','nzi blood management system');
-            
+         
+          include 'connect.php';
+
+          
           $stmt = $con->prepare("select p.ID,Firstname, Lastname, phone_number, r.blood_group, r.blood_type, r.location,r.donation_date, r.donation_time from person as p join bloodrequest as r on p.ID = r.PID");
           $stmt->execute();
 
@@ -86,7 +120,7 @@
 
           if($result->num_rows>0)
           {
-            if ($result->num_rows > 0) {
+            //if ($result->num_rows > 0) {
                 // Output the data in a table format
                 echo "<table>";
                 echo "<tr><th> First Name </th><th>  Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>    Donation Location  </th><th>    Donation Date  </th><th>    Donation Time </th><th>    Blood Type  </th></tr>";
@@ -106,18 +140,21 @@
                     echo "<td>";
                     echo "<form action='donate.php' method='post'>";
                     echo "<input type='hidden' name='patient_id' value='" . htmlspecialchars($row['ID']) . "'>";
+                    echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
+                    echo "<input type='hidden' name='donation_time' value='" . htmlspecialchars($row['donation_time']) . "'>";
                     echo "<input type='submit' value='Donate'>";
                     echo "</form>";
                     echo "<td";
 
                     echo "</tr>";
-                }
+                
                 
                 echo "</table>";
-            } else {
+            }
+         } else {
                 echo "No results found.";
             }
-        }
+        
        ?>
                     <!-- More donors can be added similarly -->
                 </ul>
