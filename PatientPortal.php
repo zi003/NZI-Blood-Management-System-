@@ -145,7 +145,7 @@
     
                         echo "<td>";
                         echo "<form action='request.php' method='post'>";
-                        echo "<input type='hidden' name='patient_id' value='" . htmlspecialchars($row['ID']) . "'>";
+                        echo "<input type='hidden' name='donor_id' value='" . htmlspecialchars($row['ID']) . "'>";
                        // echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
                         //echo "<input type='hidden' name='donation_time' value='" . htmlspecialchars($row['donation_time']) . "'>";
                         echo "<input type='submit' value='Request'>";
@@ -159,6 +159,8 @@
 
 
                   }
+                  $stmt->close();
+                  $con->close();
                 }
 
                 ?>

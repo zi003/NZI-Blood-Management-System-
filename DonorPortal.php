@@ -52,7 +52,8 @@
 
                    include 'connect.php';
 
-                   $stmt = $con->prepare("select p.Firstname, p.Lastname, p.phone_number, don.PID, br.donation_date, br.donation_time, br.location, br.blood_type from donor as d join donations as don on (d.id = don.DID) join bloodrequest as br on (br.PID = don.PID) join person as p on (br.PID = p.ID)");
+                   $stmt = $con->prepare("select p.Firstname, p.Lastname, p.phone_number, don.PID, br.donation_date, br.donation_time, br.location, br.blood_type from donor as d join donations as don on (d.id = don.DID) join bloodrequest as br on (br.PID = don.PID) join person as p on (br.PID = p.ID) where don.DID = ?");
+                   $stmt->bind_param("i",$_SESSION['id']);
                    $stmt->execute();
                    $result = $stmt->get_result();
 
@@ -88,14 +89,53 @@
             <?php elseif($page == "donorRequest"): ?>
                 <h2>Donor Requests</h2>
                 <p>Patient Requests:</p>
-                <ul>
-                    <li>
-                        <span>John Smith (Blood Group: B+)</span>
-                        <button>Accept</button>
-                        <button>Decline</button>
-                    </li>
-                    <!-- More patients can be added similarly -->
-                </ul>
+               
+                <?php
+                 
+                 include "connect.php";
+
+                 $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, br.donation_date, br.donation_time, br.location, br.blood_type, br.blood_group from requestdonor as rd join bloodrequest as br on (rd.PID = br.PID) join person as p on (rd.PID = p.ID) where rd.DID = ? ");
+                 $stmt->bind_param("i",$_SESSION['id']);
+                 $stmt->execute();
+                 $result = $stmt->get_result();
+
+                 if($result->num_rows>0){
+                    echo "<table>";
+                    echo "<tr><th> First Name </th><th>  Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>    Donation Location  </th><th>    Donation Date  </th><th>    Donation Time </th><th>    Blood Type  </th></tr>";
+                    
+                    // Fetch and output each row of data
+                    while ($row = $result->fetch_assoc()) {
+                       
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row['Firstname']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['Lastname']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['blood_group']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['phone_number']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['location']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['donation_date']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['donation_time']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['blood_type']) . "</td>";
+    
+                        echo "<td>";
+                        echo "<form action='donate.php' method='post'>";
+                        echo "<input type='hidden' name='patient_id' value='" . htmlspecialchars($row['ID']) . "'>";
+                        echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
+                        echo "<input type='hidden' name='donation_time' value='" . htmlspecialchars($row['donation_time']) . "'>";
+                        echo "<input type='submit' value='Donate'>";
+                        echo "</form>";
+                        echo "<td";
+    
+                        echo "</tr>";
+                    
+                    
+                    echo "</table>";
+                }
+             } else {
+                    echo "No Requests.";
+                }
+                 
+ 
+                 ?>
 
             <!-- Patient List Page -->
             <?php elseif($page == "patientList"): ?>
