@@ -19,8 +19,6 @@ ini_set('display_errors', 1);
   $phonenumber = $_POST['phone-number'];
   $emailaddress = $_POST['email'];
   $person_type = $_POST['person_type'];
-  $last_donation_date = $_POST['DOD'];
-  $patient_type = $_POST['frequency'];
   $location = $_POST['location'];
 
     $con = new mysqli('localhost','root','','nzi blood management system');
@@ -35,10 +33,14 @@ ini_set('display_errors', 1);
 
       $id = $con->insert_id;
       if($person_type == "Donor"){
-        $stmt = $con->prepare("insert into donor (id,last_donation_date) values(?,?)");
-        $stmt->bind_param("is",$id,$last_donation_date);
+        $last_donation_date = $_POST['DOD'];
+        $last_bloodtype_donate = $_POST['bloodType'];
+
+        $stmt = $con->prepare("insert into donor (id,last_donation_date,last_btype_donated) values(?,?,?)");
+        $stmt->bind_param("iss",$id,$last_donation_date, $last_bloodtype_donate);
       }
       else if($person_type == "Patient"){
+        $patient_type = $_POST['frequency'];
         $stmt = $con->prepare("insert into patient (id,patient_type) values(?,?)");
         $stmt->bind_param("is",$id,$patient_type);
       }

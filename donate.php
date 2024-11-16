@@ -9,7 +9,16 @@
 
    
    include 'connect.php';
+   
+   $stmt = $con->prepare("select count(*) from person as p join donor as d on (p.ID = d.id) where ((last_btype_donated = 'blood' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 3 month)) or (last_btype_donated = 'platelet' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 2 week))) and p.id = ?");
+   $stmt->bind_param("i",$donor_id);
+   $stmt->execute();
+   $stmt->bind_result($num_rows);
+   $stmt->fetch();
 
+
+   if($num_rows>0){
+   $stmt->close();
    $stmt = $con->prepare("insert into donations VALUES (?,?,?,?)");
    $stmt->bind_param("iiss",$donor_id, $patient_id, $donation_date, $donation_time);
 
@@ -25,7 +34,14 @@
 
     
     if($stmt->execute()){
-    
+     $stmt->close();
+
+     $stmt = $con->prepare("delete from requestdonor where PID = ? and DID = ?");
+     $stmt->bind_param("ii",$patient_id,$donor_id);
+     $stmt->execute();
+     $stmt->close();
+     $con->close();
+
      echo'<script>
        
        alert("Successfully chosen donor for donation!");
@@ -39,9 +55,7 @@
    else{
     die("Error!");
    }
-
-   $stmt->close();
-   $con->close();
+   }
 
 
 ?>

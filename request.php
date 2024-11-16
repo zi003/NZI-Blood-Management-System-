@@ -22,6 +22,7 @@
    $stmt->close();
    $con->close();
 
+   header("location: Patientportal.php");
 
 
 ?>

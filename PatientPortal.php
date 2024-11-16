@@ -61,12 +61,88 @@
                     <li>Patient Type:<?php echo $_SESSION['patient_type']?> </li>
                     <li></li>
                 </ul>
+                <h3>Pending Requests:</h3>
+                <?php
+                 include 'connect.php';
+
+                 $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, p.blood_group, br.donation_date, br.donation_time, br.location, br.blood_type from requestdonor as rd join person as p on (rd.DID = p.ID) join bloodrequest as br on (br.PID = rd.PID) where rd.PID = ?");
+                 $stmt->bind_param("i",$_SESSION['id']);
+                 $stmt->execute();
+                 $result = $stmt->get_result();
+
+                 if($result->num_rows>0)
+                 {
+                  echo "<table>";
+                  echo "<tr><th> First Name </th><th> Last Name </th><th> Contact Number </th><th> Donation Date  </th><th>  Donation Time  </th><th>  Donation Location  </th><th>  Blood Type </th></tr>";
+              
+              // Fetch and output each row of data
+              while ($row = $result->fetch_assoc()) {
+                  echo "<tr>";
+                  echo "<td>" . htmlspecialchars($row['Firstname']) . "</td>";
+                  echo "<td>" . htmlspecialchars($row['Lastname']) . "</td>";
+                  echo "<td>" . htmlspecialchars($row['phone_number']) . "</td>";
+                  echo "<td>" . htmlspecialchars($row['donation_date']) . "</td>";
+                  echo "<td>" . htmlspecialchars($row['donation_time']) . "</td>";
+                  echo "<td>" . htmlspecialchars($row['location']) . "</td>";
+                  echo "<td>" . htmlspecialchars($row['blood_type']) . "</td>";
+                
+                  echo "</tr>";
+
+                 }
+                 echo "</table>";
+
+              }
+              $stmt->close();
+              $con->close();
+                 
+            ?>
 
                 <h3>Upcoming Donations:</h3>
-                <ul>
-                   <!-- <li>Donated on: </li> -->
-                    <!-- Add more history records as needed -->
-                </ul>
+                <?php 
+
+                   include 'connect.php';
+
+                   $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, don.PID, br.donation_date, br.donation_time, br.location, br.blood_type from donor as d join donations as don on (d.id = don.DID) join bloodrequest as br on (br.PID = don.PID) join person as p on (don.DID = p.ID) where don.PID = ?");
+                   $stmt->bind_param("i",$_SESSION['id']);
+                   $stmt->execute();
+                   $result = $stmt->get_result();
+
+                   if($result->num_rows>0)
+                   {
+                    echo "<table>";
+                    echo "<tr><th> First Name </th><th> Last Name </th><th> Contact Number </th><th> Donation Date  </th><th>  Donation Time  </th><th>  Donation Location  </th><th>  Blood Type </th></tr>";
+                
+                // Fetch and output each row of data
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['Firstname']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['Lastname']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['phone_number']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['donation_date']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['donation_time']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['location']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['blood_type']) . "</td>";
+                  
+                
+                    echo "<td>";
+                    echo "<form action='complete.php' method='post'>";
+                    echo "<input type='hidden' name='donor_id' value='" . htmlspecialchars($row['ID']) . "'>";
+                    echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
+                    echo "<input type='submit' value='Mark Complete'>";
+                    echo "</form>";
+                    echo "</td>";
+                   
+                    echo "</tr>";
+
+                   }
+                   echo "</table>";
+
+                }
+                $stmt->close();
+                $con->close();
+                                
+            ?>
+                
            <!-- </div>-->
 
             <!-- Create Request Page -->
@@ -123,7 +199,8 @@
 
                   include "connect.php";
 
-                  $stmt = $con->prepare("select p.ID, Firstname, Lastname, phone_number, location, blood_group from person as p join donor as d on (p.ID = d.id) where p.engaged = 0 and ((last_btype_donated = 'blood' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 3 month)) or (last_btype_donated = 'platelet' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 2 week)))");
+                  $stmt = $con->prepare("select p.ID, Firstname, Lastname, phone_number, location, blood_group from person as p join donor as d on (p.ID = d.id) where p.engaged = 0 and ((last_btype_donated = 'blood' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 3 month)) or (last_btype_donated = 'platelet' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 2 week))) and (select count(*) from requestdonor as rd where (p.ID = rd.DID) and PID = ?)=0 ");
+                  $stmt->bind_param("i",$_SESSION['id']);
                   $stmt-> execute();
 
                   $res = $stmt->get_result();
@@ -150,15 +227,14 @@
                         //echo "<input type='hidden' name='donation_time' value='" . htmlspecialchars($row['donation_time']) . "'>";
                         echo "<input type='submit' value='Request'>";
                         echo "</form>";
-                        echo "<td";
+                        echo "</td>";
     
                         echo "</tr>";
                     
-                    
-                    echo "</table>";
 
 
                   }
+                  echo "</table>";
                   $stmt->close();
                   $con->close();
                 }

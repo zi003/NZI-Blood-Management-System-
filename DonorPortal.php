@@ -74,10 +74,9 @@
                     echo "<td>" . htmlspecialchars($row['blood_type']) . "</td>";
                     echo "</tr>";
                 
-                
-                   echo "</table>";
 
                    }
+                   echo "</table>";
 
                 }
                 $stmt->close();
@@ -87,14 +86,14 @@
            
             <!-- Donor Requests Page -->
             <?php elseif($page == "donorRequest"): ?>
-                <h2>Donor Requests</h2>
+                <h2>Patient Requests</h2>
                 <p>Patient Requests:</p>
                
                 <?php
                  
                  include "connect.php";
 
-                 $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, br.donation_date, br.donation_time, br.location, br.blood_type, br.blood_group from requestdonor as rd join bloodrequest as br on (rd.PID = br.PID) join person as p on (rd.PID = p.ID) where rd.DID = ? ");
+                 $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, br.donation_date, br.donation_time, br.location, br.blood_type, br.blood_group from requestdonor as rd join bloodrequest as br on (rd.PID = br.PID) join person as p on (rd.PID = p.ID) where rd.DID = ? ");
                  $stmt->bind_param("i",$_SESSION['id']);
                  $stmt->execute();
                  $result = $stmt->get_result();
@@ -121,18 +120,20 @@
                         echo "<input type='hidden' name='patient_id' value='" . htmlspecialchars($row['ID']) . "'>";
                         echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
                         echo "<input type='hidden' name='donation_time' value='" . htmlspecialchars($row['donation_time']) . "'>";
-                        echo "<input type='submit' value='Donate'>";
+                        echo "<input type='submit' value='Accept'>";
                         echo "</form>";
                         echo "<td";
     
                         echo "</tr>";
                     
-                    
-                    echo "</table>";
                 }
+                echo "</table>";
              } else {
                     echo "No Requests.";
                 }
+
+                $stmt->close();
+                $con->close();
                  
  
                  ?>
@@ -186,7 +187,7 @@
                     echo "<input type='hidden' name='donation_time' value='" . htmlspecialchars($row['donation_time']) . "'>";
                     echo "<input type='submit' value='Donate'>";
                     echo "</form>";
-                    echo "<td";
+                    echo "</td>";
 
                     echo "</tr>";
                 
@@ -196,6 +197,8 @@
          } else {
                 echo "No results found.";
             }
+            $stmt->close();
+            $con->close();
         
        ?>
                     <!-- More donors can be added similarly -->
