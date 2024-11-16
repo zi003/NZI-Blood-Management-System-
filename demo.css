@@ -126,3 +126,41 @@ button:hover {
     background-color: #2980b9;
 }
 
+/* Styling headers */
+.content th {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Styling table rows */
+.content td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+/* Adding hover effect on rows */
+.content tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Center align the action button */
+.content td form {
+    display: inline-block;
+}
+
+/* Styling the button */
+.content input[type="submit"] {
+    padding: 6px 12px;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.content input[type="submit"]:hover {
+    background-color: #45a049;
+}

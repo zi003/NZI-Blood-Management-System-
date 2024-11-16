@@ -67,7 +67,7 @@
                    <!-- <li>Donated on: </li> -->
                     <!-- Add more history records as needed -->
                 </ul>
-            </div>
+           <!-- </div>-->
 
             <!-- Create Request Page -->
              
@@ -112,25 +112,61 @@
 
                     <button type="submit" name = "submit_request">Submit Request</button>
                 </form>
-            </div>
+           <!-- </div>-->
         
             <!-- Donor List Page -->
             <?php elseif($page == "donorList"): ?>
            <!-- <div id="donorList" class="page" style="display:none;">-->
                 <h2>Donor List</h2>
                 <p>Available Donors:</p>
-                <ul>
-                    <li>
-                        <span>John Smith (Blood Group: B+)</span>
-                        <button>Request Donation</button>
-                    </li>
-                    <!-- More donors can be added similarly -->
-                </ul>
+                <?php
 
-            </div>
+                  include "connect.php";
+
+                  $stmt = $con->prepare("select p.ID, Firstname, Lastname, phone_number, location, blood_group from person as p join donor as d on (p.ID = d.id) where p.engaged = 0 and ((last_btype_donated = 'blood' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 3 month)) or (last_btype_donated = 'platelet' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 2 week)))");
+                  $stmt-> execute();
+
+                  $res = $stmt->get_result();
+
+                  if($res->num_rows >0)
+                  {
+                    echo "<table>";
+                    echo "<tr><th> First Name </th><th>  Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>   Location  </th></tr>";
+                    
+                    // Fetch and output each row of data
+                    while ($row = $res->fetch_assoc()) {
+                       
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row['Firstname']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['Lastname']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['blood_group']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['phone_number']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['location']) . "</td>";
+    
+                        echo "<td>";
+                        echo "<form action='request.php' method='post'>";
+                        echo "<input type='hidden' name='patient_id' value='" . htmlspecialchars($row['ID']) . "'>";
+                       // echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
+                        //echo "<input type='hidden' name='donation_time' value='" . htmlspecialchars($row['donation_time']) . "'>";
+                        echo "<input type='submit' value='Request'>";
+                        echo "</form>";
+                        echo "<td";
+    
+                        echo "</tr>";
+                    
+                    
+                    echo "</table>";
+
+
+                  }
+                }
+
+                ?>
+
+            <!--</div>-->
             <?php endif; ?>
         </div>
-    </div>
+   <!-- </div>-->
 
     <script>
       /*  function showPage(pageId) {
