@@ -128,6 +128,7 @@
                     echo "<form action='complete.php' method='post'>";
                     echo "<input type='hidden' name='donor_id' value='" . htmlspecialchars($row['ID']) . "'>";
                     echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
+                    echo "<input type='hidden' name='blood_type' value='" . htmlspecialchars($row['blood_type']) . "'>";
                     echo "<input type='submit' value='Mark Complete'>";
                     echo "</form>";
                     echo "</td>";

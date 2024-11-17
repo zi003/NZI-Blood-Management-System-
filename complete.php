@@ -5,7 +5,7 @@
   $patient_id = $_SESSION['id'];
   $donor_id = $_POST['donor_id'];
   $donation_date = $_POST['donation_date'];
-
+  $blood_type = $_POST['blood_type'];
   include "connect.php";
 
   $stmt = $con->prepare("delete from donations where DID = ? and PID = ? and donation_date = ?");
@@ -21,6 +21,11 @@
   $stmt = $con->prepare("update person set engaged = false where ID = ? or ID = ?");
   $stmt->bind_param("is",$patient_id,$donor_id);
   $stmt->execute();
+
+  $stmt = $con->prepare("update donor set last_donation_date = ?, last_btype_donated = ? where id = ?");
+  $stmt->bind_param("ssi",$donation_date, $blood_type,$donor_id);
+  $stmt->execute();
+
 
 
   header("location: PatientPortal.php");
