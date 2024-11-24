@@ -37,7 +37,9 @@
             <?php if($result->num_rows==0 || $_SESSION['patient_type'] == "Regular"):?>
             <button type = "submit" name="action" value="createRequest">Create Requests</button>
             <?php endif; ?>
+            <?php if($result->num_rows!=0):?>
             <button type = "submit" name="action" value="donorList">Donor List</button>
+            <?php endif; ?>
             <button type = "button" onclick="logout()">Logout</button>
             </form>
         </div>
@@ -62,6 +64,7 @@
                     <li></li>
                 </ul>
                 <h3>Pending Requests:</h3>
+                <br></br>
                 <?php
                  include 'connect.php';
 
@@ -91,18 +94,23 @@
                  }
                  echo "</table>";
 
+              }else{
+               
+                echo "\n No Pending Requests. \n";
               }
               $stmt->close();
               $con->close();
                  
             ?>
-
+                <br></br>
+                <br></br>
                 <h3>Upcoming Donations:</h3>
+                <br></br>
                 <?php 
 
                    include 'connect.php';
 
-                   $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, don.PID, br.donation_date, br.donation_time, br.location, br.blood_type from donor as d join donations as don on (d.id = don.DID) join bloodrequest as br on (br.PID = don.PID) join person as p on (don.DID = p.ID) where don.PID = ?");
+                   $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, don.PID, br.donation_date, br.donation_time, br.location, br.blood_type from donor as d join donations as don on (d.id = don.DID) join bloodrequest as br on (br.PID = don.PID) join person as p on (don.DID = p.ID) where don.PID = ? ");
                    $stmt->bind_param("i",$_SESSION['id']);
                    $stmt->execute();
                    $result = $stmt->get_result();
@@ -138,7 +146,10 @@
                    }
                    echo "</table>";
 
-                }
+                }else{
+               
+                    echo "\n No Upcoming Donations. \n";
+                  }
                 $stmt->close();
                 $con->close();
                                 

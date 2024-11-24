@@ -39,6 +39,7 @@
             <!-- My Profile (Dashboard) Page -->
              <?php if($page == "dashboard"): ?>
                 <h2>My Profile</h2>
+                <br> <br>
                 <p>Account Information:</p>
                 <ul>
                     <li>Name:<?php echo $_SESSION['name'] ?> </li>
@@ -47,6 +48,7 @@
                     <li>Location:<?php echo $_SESSION['location'] ?> </li>
                     <li>Last Blood Donation Date:<?php echo $_SESSION['last_dondate'] ?> </li>
                 </ul>
+                <br> <br>
                 <h3>Upcoming Donations:</h3>
                 <?php 
 
@@ -79,6 +81,9 @@
                    echo "</table>";
 
                 }
+                else{
+                    echo "No upcoming donations.";
+                }
                 $stmt->close();
                 $con->close();
                                 
@@ -93,7 +98,7 @@
                  
                  include "connect.php";
 
-                 $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, br.donation_date, br.donation_time, br.location, br.blood_type, br.blood_group from requestdonor as rd join bloodrequest as br on (rd.PID = br.PID) join person as p on (rd.PID = p.ID) where rd.DID = ? ");
+                 $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, br.donation_date, br.donation_time, br.location, br.blood_type, br.blood_group from requestdonor as rd join bloodrequest as br on (rd.PID = br.PID) join person as p on (rd.PID = p.ID) where rd.DID = ? and (select count(*) from donations where PID = p.ID and donation_date = br.donation_date) = 0");
                  $stmt->bind_param("i",$_SESSION['id']);
                  $stmt->execute();
                  $result = $stmt->get_result();
