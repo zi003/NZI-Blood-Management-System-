@@ -161,7 +161,8 @@
           include 'connect.php';
 
           
-          $stmt = $con->prepare("select p.ID,Firstname, Lastname, phone_number, r.blood_group, r.blood_type, r.location,r.donation_date, r.donation_time from person as p join bloodrequest as r on p.ID = r.PID where engaged = 0");
+          $stmt = $con->prepare("select p.ID,Firstname, Lastname, phone_number, r.blood_group, r.blood_type, r.location,r.donation_date, r.donation_time from person as p join bloodrequest as r on p.ID = r.PID where (select count(*) from donations as d where d.PID = p.ID and d.donation_date = r.donation_date)=0 and r.blood_group = ?");
+          $stmt->bind_param("s",$_SESSION['blood_grp']);
           $stmt->execute();
 
           $result = $stmt->get_result();
