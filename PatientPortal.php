@@ -3,7 +3,7 @@
    
    $id = $_SESSION['id'];
    $con = new mysqli('localhost','root','','nzi blood management system');
-   $stmt = $con->prepare("select * from bloodrequest where PID = ?");
+   $stmt = $con->prepare("select b.donation_date from bloodrequest as b where PID = ? and (select count(*) from donations as d join bloodrequest as br on d.PID = br.PID where d.donation_date = b.donation_date) = 0");
    $stmt->bind_param("s",$id);
 
    $stmt->execute();
@@ -54,7 +54,7 @@
             <!--<div id="patientProfile" class="page">-->
             <?php if($page == "dashboard"): ?>
                 <h2>My Profile</h2>
-                <p>Account Information:</p>
+                <br> </br>
                 <ul>
                     <li>Name: <?php echo $_SESSION['name']  ?></li>
                     <li>Phone Number:<?php echo $_SESSION['phone_num']?> </li>
@@ -68,7 +68,7 @@
                 <?php
                  include 'connect.php';
 
-                 $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, p.blood_group, br.donation_date, br.donation_time, br.location, br.blood_type from requestdonor as rd join person as p on (rd.DID = p.ID) join bloodrequest as br on (br.PID = rd.PID) where rd.PID = ?");
+                 $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, p.blood_group, br.donation_date, br.donation_time, br.location, br.blood_type from requestdonor as rd join person as p on (rd.DID = p.ID) join bloodrequest as br on (br.PID = rd.PID) where rd.PID = ? and (select count(*) from donations where PID = rd.PID and donation_date = br.donation_date) = 0 ");
                  $stmt->bind_param("i",$_SESSION['id']);
                  $stmt->execute();
                  $result = $stmt->get_result();
@@ -110,7 +110,7 @@
 
                    include 'connect.php';
 
-                   $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, don.PID, br.donation_date, br.donation_time, br.location, br.blood_type from donor as d join donations as don on (d.id = don.DID) join bloodrequest as br on (br.PID = don.PID) join person as p on (don.DID = p.ID) where don.PID = ? ");
+                   $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, don.PID, br.donation_date, br.donation_time, br.location, br.blood_type from donor as d join donations as don on (d.id = don.DID) join bloodrequest as br on (br.PID = don.PID) join person as p on (don.DID = p.ID) where don.PID = ? and don.donation_date = br.donation_date ");
                    $stmt->bind_param("i",$_SESSION['id']);
                    $stmt->execute();
                    $result = $stmt->get_result();
@@ -174,14 +174,11 @@
 
                     <label for="bloodGroup">Blood Group:</label>
                     <select id="bloodGroup" name="bloodGroup">
-                        <option value="A+">A+</option>
-                        <option value="A-">A-</option>
-                        <option value="B+">B+</option>
-                        <option value="B-">B-</option>
-                        <option value="O+">O+</option>
-                        <option value="O-">O-</option>
-                        <option value="AB+">AB+</option>
-                        <option value="AB-">AB-</option>
+                        <option value="<?= $_SESSION['blood_grp'] ?>" selected>
+                            
+                        <?= $_SESSION['blood_grp'] ?>
+                        </option>
+                        
                     </select>
 
                     <label for="date">Date:</label>
@@ -206,13 +203,14 @@
             <?php elseif($page == "donorList"): ?>
            <!-- <div id="donorList" class="page" style="display:none;">-->
                 <h2>Donor List</h2>
-                <p>Available Donors:</p>
+               
+                <br></br>
                 <?php
 
                   include "connect.php";
 
-                  $stmt = $con->prepare("select p.ID, Firstname, Lastname, phone_number, location, blood_group from person as p join donor as d on (p.ID = d.id) where p.engaged = 0 and ((last_btype_donated = 'blood' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 3 month)) or (last_btype_donated = 'platelet' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 2 week))) and (select count(*) from requestdonor as rd where (p.ID = rd.DID) and PID = ?)=0 ");
-                  $stmt->bind_param("i",$_SESSION['id']);
+                  $stmt = $con->prepare("select p.ID, Firstname, Lastname, phone_number, location, blood_group from person as p join donor as d on (p.ID = d.id) where p.engaged = 0 and ((last_btype_donated = 'blood' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 3 month)) or (last_btype_donated = 'platelet' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 2 week))) and (select count(*) from requestdonor as rd where (p.ID = rd.DID) and PID = ?)=0 and p.blood_group = ?");
+                  $stmt->bind_param("is",$_SESSION['id'], $_SESSION['blood_grp']);
                   $stmt-> execute();
 
                   $res = $stmt->get_result();
@@ -247,9 +245,11 @@
 
                   }
                   echo "</table>";
-                  $stmt->close();
-                  $con->close();
+                }else {
+                    echo "No Available Donors.";
                 }
+                $stmt->close();
+                $con->close();
 
                 ?>
 

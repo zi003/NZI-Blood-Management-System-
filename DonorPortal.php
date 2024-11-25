@@ -19,7 +19,7 @@
             <h2>Blood Donation</h2>
             <form method="post">
                 <button type = "submit" name="action" value="dashboard">My Profile</button>
-                <button type = "submit" name="action" value="donorRequest">Donor Requests</button>
+                <button type = "submit" name="action" value="donorRequest">Donation Requests</button>
                 <button type = "submit" name="action" value="patientList">Patient List</button>
                 <button type = "button" onclick="logout()">Logout</button>
             </form>
@@ -39,8 +39,7 @@
             <!-- My Profile (Dashboard) Page -->
              <?php if($page == "dashboard"): ?>
                 <h2>My Profile</h2>
-                <br> <br>
-                <p>Account Information:</p>
+                <br> </br>
                 <ul>
                     <li>Name:<?php echo $_SESSION['name'] ?> </li>
                     <li>Phone Number: <?php echo $_SESSION['phone_num'] ?></li>
@@ -50,11 +49,12 @@
                 </ul>
                 <br> <br>
                 <h3>Upcoming Donations:</h3>
+                <br></br>
                 <?php 
 
                    include 'connect.php';
 
-                   $stmt = $con->prepare("select p.Firstname, p.Lastname, p.phone_number, don.PID, br.donation_date, br.donation_time, br.location, br.blood_type from donor as d join donations as don on (d.id = don.DID) join bloodrequest as br on (br.PID = don.PID) join person as p on (br.PID = p.ID) where don.DID = ?");
+                   $stmt = $con->prepare("select p.Firstname, p.Lastname, p.phone_number, don.PID, br.donation_date, br.donation_time, br.location, br.blood_type from donor as d join donations as don on (d.id = don.DID) join bloodrequest as br on (br.PID = don.PID) join person as p on (br.PID = p.ID) where don.DID = ? and don.donation_date = br.donation_date");
                    $stmt->bind_param("i",$_SESSION['id']);
                    $stmt->execute();
                    $result = $stmt->get_result();
@@ -92,13 +92,13 @@
             <!-- Donor Requests Page -->
             <?php elseif($page == "donorRequest"): ?>
                 <h2>Patient Requests</h2>
-                <p>Patient Requests:</p>
+                <br></br>
                
                 <?php
                  
                  include "connect.php";
 
-                 $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, br.donation_date, br.donation_time, br.location, br.blood_type, br.blood_group from requestdonor as rd join bloodrequest as br on (rd.PID = br.PID) join person as p on (rd.PID = p.ID) where rd.DID = ? and (select count(*) from donations where PID = p.ID and donation_date = br.donation_date) = 0");
+                 $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, br.donation_date, br.donation_time, br.location, br.blood_type, br.blood_group from requestdonor as rd join bloodrequest as br on (rd.PID = br.PID) join person as p on (rd.PID = p.ID) where rd.DID = ? and (select count(*) from donations where PID = p.ID and donation_date = br.donation_date) = 0 ");
                  $stmt->bind_param("i",$_SESSION['id']);
                  $stmt->execute();
                  $result = $stmt->get_result();
@@ -125,7 +125,8 @@
                         echo "<input type='hidden' name='patient_id' value='" . htmlspecialchars($row['ID']) . "'>";
                         echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
                         echo "<input type='hidden' name='donation_time' value='" . htmlspecialchars($row['donation_time']) . "'>";
-                        echo "<input type='submit' value='Accept'>";
+                        echo "<input type='submit' name = 'choice' value='Accept'>";
+                        echo "<input type='submit' name = 'choice' value='Reject'>";
                         echo "</form>";
                         echo "<td";
     
@@ -146,7 +147,8 @@
             <!-- Patient List Page -->
             <?php elseif($page == "patientList"): ?>
                 <h2>Patient List</h2>
-                <p>Available Patients:</p>
+                <br></br>
+                
                
                 <!--
                 <ul>
@@ -159,7 +161,7 @@
           include 'connect.php';
 
           
-          $stmt = $con->prepare("select p.ID,Firstname, Lastname, phone_number, engaged, r.blood_group, r.blood_type, r.location,r.donation_date, r.donation_time from person as p join bloodrequest as r on p.ID = r.PID");
+          $stmt = $con->prepare("select p.ID,Firstname, Lastname, phone_number, r.blood_group, r.blood_type, r.location,r.donation_date, r.donation_time from person as p join bloodrequest as r on p.ID = r.PID where engaged = 0");
           $stmt->execute();
 
           $result = $stmt->get_result();
@@ -168,13 +170,15 @@
           {
             //if ($result->num_rows > 0) {
                 // Output the data in a table format
-                echo "<table>";
-                echo "<tr><th> First Name </th><th>  Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>    Donation Location  </th><th>    Donation Date  </th><th>    Donation Time </th><th>    Blood Type  </th></tr>";
+                //echo "<table>";
+                //echo "<tr><th> First Name </th><th>  Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>    Donation Location  </th><th>    Donation Date  </th><th>    Donation Time </th><th>    Blood Type  </th></tr>";
                 
                 // Fetch and output each row of data
                 while ($row = $result->fetch_assoc()) {
-                    if($row['engaged']==true)
-                       continue;
+                   // if($row['engaged']==true)
+                     //  continue;
+                    echo "<table>";
+                    echo "<tr><th> First Name </th><th>  Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>    Donation Location  </th><th>    Donation Date  </th><th>    Donation Time </th><th>    Blood Type  </th></tr>";
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['Firstname']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Lastname']) . "</td>";
@@ -190,7 +194,7 @@
                     echo "<input type='hidden' name='patient_id' value='" . htmlspecialchars($row['ID']) . "'>";
                     echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
                     echo "<input type='hidden' name='donation_time' value='" . htmlspecialchars($row['donation_time']) . "'>";
-                    echo "<input type='submit' value='Donate'>";
+                    echo "<input type='submit' name = 'choice' value='Donate'>";
                     echo "</form>";
                     echo "</td>";
 
