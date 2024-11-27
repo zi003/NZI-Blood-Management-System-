@@ -2,6 +2,17 @@
 
     session_start();
 
+    include "connect.php";
+
+    $stmt =  $con->prepare("select count(*) from requestdonor where DID = ?");
+    $stmt->bind_param("i",$_SESSION['id']);
+    $stmt->execute();
+    $stmt->bind_result($number_of_requests);
+
+    $stmt->fetch();
+    $stmt->close();
+    $con->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +30,15 @@
             <h2>Blood Donation</h2>
             <form method="post">
                 <button type = "submit" name="action" value="dashboard">My Profile</button>
+
+                <div class="button-with-badge">
                 <button type = "submit" name="action" value="donorRequest">Donation Requests</button>
+                
+                <?php if ($number_of_requests >= 0): ?>
+                <span class="badge"><?= $number_of_requests?></span>
+                <?php endif; ?>
+                </div>
+
                 <button type = "submit" name="action" value="patientList">Patient List</button>
                 <button type = "button" onclick="logout()">Logout</button>
             </form>
@@ -125,8 +144,8 @@
                         echo "<input type='hidden' name='patient_id' value='" . htmlspecialchars($row['ID']) . "'>";
                         echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
                         echo "<input type='hidden' name='donation_time' value='" . htmlspecialchars($row['donation_time']) . "'>";
-                        echo "<input type='submit' name = 'choice' value='Accept'>";
-                        echo "<input type='submit' name = 'choice' value='Reject'>";
+                        echo "<input type='submit' name = 'choice' value='Accept' class = 'button-accept'>";
+                        echo "<input type='submit' name = 'choice' value='Reject' class = 'button-reject' >";
                         echo "</form>";
                         echo "<td";
     

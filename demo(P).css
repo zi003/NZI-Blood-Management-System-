@@ -137,8 +137,40 @@ button:hover {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-right: 10px;
 }
 
+.content #dashboard input[type="submit"].button-accept{
+
+    background-color: green;
+}
+.content #dashboard input[type="submit"].button-reject{
+
+    background-color: red;
+}
 .content #dashboard input[type="submit"]:hover {
     background-color: #45a049;
+}
+
+/** adding badge to see the number of requests **/
+.button-with-badge {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+.badge {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
 }
