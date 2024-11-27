@@ -208,9 +208,18 @@
                 <?php
 
                   include "connect.php";
+                  
+                  $stmt = $con->prepare("select p.ID, Firstname, Lastname, phone_number, location, blood_group, 
+                                         (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) +
+                                         sin(radians(?)) * sin(radians(latitude)))) AS distance
+                                        from person as p 
+                                         join donor as d on (p.ID = d.id) 
+                                         where p.engaged = 0 and 
+                                         ((last_btype_donated = 'blood' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 3 month))
+                                          or (last_btype_donated = 'platelet' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 2 week))) 
+                                          and (select count(*) from requestdonor as rd where (p.ID = rd.DID) and PID = ?)=0 and p.blood_group = ? order by distance");
 
-                  $stmt = $con->prepare("select p.ID, Firstname, Lastname, phone_number, location, blood_group from person as p join donor as d on (p.ID = d.id) where p.engaged = 0 and ((last_btype_donated = 'blood' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 3 month)) or (last_btype_donated = 'platelet' and last_donation_date< DATE_SUB(CURDATE(), INTERVAL 2 week))) and (select count(*) from requestdonor as rd where (p.ID = rd.DID) and PID = ?)=0 and p.blood_group = ?");
-                  $stmt->bind_param("is",$_SESSION['id'], $_SESSION['blood_grp']);
+                  $stmt->bind_param("dddis",$_SESSION['latitude'], $_SESSION['longitude'],$_SESSION['latitude'], $_SESSION['id'], $_SESSION['blood_grp']);
                   $stmt-> execute();
 
                   $res = $stmt->get_result();

@@ -26,9 +26,33 @@ ini_set('display_errors', 1);
     if ($con->connect_error) {
         die("Connection failed: " . $con->connect_error);
     }
-    
-      $stmt = $con->prepare("insert into person (Firstname, Lastname, password, blood_group, phone_number, email_address, person_type,location) VALUES (?,?,?,?,?,?,?,?)");
-      $stmt->bind_param("ssssssss",$firstname,$lastname,$hashed_password,$bloodgroup,$phonenumber,$emailaddress,$person_type,$location);
+      /*Finding latitude and longitude of person*/
+      
+      $address = urlencode($location." Dhaka Bangladesh");
+      $url = "https://nominatim.openstreetmap.org/search?format=json&q={$address}";
+
+      //adding header so that the website knows who I am
+      $options = [
+        'http' => [
+            'header' => 'User-Agent: LocalHost/CSE311_Project/(islamzuhayer2003@gmail.com)'  
+        ]
+       ];
+
+      $context = stream_context_create($options);
+      $response = file_get_contents($url, false, $context);
+
+      if($response){
+      $data = json_decode($response, true);
+      
+      if(isset($data[0])){
+        $latitude = $data[0]['lat'];
+        $longitude = $data[0]['lon'];
+
+      }
+      }
+
+      $stmt = $con->prepare("insert into person (Firstname, Lastname, password, blood_group, phone_number, email_address, person_type,location, latitude, longitude) VALUES (?,?,?,?,?,?,?,?,?,?)");
+      $stmt->bind_param("ssssssssdd",$firstname,$lastname,$hashed_password,$bloodgroup,$phonenumber,$emailaddress,$person_type,$location,$latitude, $longitude);
       $stmt->execute();
 
       $id = $con->insert_id;
