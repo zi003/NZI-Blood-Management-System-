@@ -45,17 +45,17 @@
         <!-- Phone Number -->
         <div class="input-group">
           <label for="phone-number">Phone Number</label>
-          <input type="tel" id="phone-number" name="phone-number" placeholder="Enter your phone number" required>
+          <input type="tel" id="phone-number" name="phone-number"  placeholder="Enter your phone number" pattern="^\d{11}$" title="Phone number must be 11 digits" required>
         </div>
         <!--Date Of Birth -->
         <div class="input-group">
           <label for="Date of Birth">Date of Birth</label>
-          <input type="date" id="Date of Birth" name="Date of Birth" placeholder="Enter your Date of Birth" required>
+          <input type="date" id="Date of Birth" name="Date of Birth" placeholder="Enter your Date of Birth" max = "2004-12-31" required>
         </div>
         <!--Last of Date Donation -->
         <div class="input-group">
           <label for="Last of Date Donation">Last of Date Donation</label>
-          <input type="date" id="Last of Date Donation" name="DOD" placeholder="Enter your Date of Donation" required>
+          <input type="date" id="Last Date of Donation" name="DOD" placeholder="Enter your Date of Donation" required>
         </div>
       <div class = "input-group">
       <label for="requestType">Last Blood Type Donated:</label>

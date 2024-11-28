@@ -62,8 +62,11 @@
                 <ul>
                     <li>Name:<?php echo $_SESSION['name'] ?></li>
                     <li>Phone Number: <?php echo $_SESSION['phone_num']; ?> 
-                    <button class="edit-phone-btn" onclick="window.location.href='edit_contact.html'">Edit Phone</button>
+                    <a href="edit_contact.html">
+                    <button class="edit-phone-btn">Edit Phone</button>
+                     </a>
                     </li>
+
                     <li>Blood Group:<?php echo $_SESSION['blood_grp'] ?></li>
                     <li>Location:<?php echo $_SESSION['location'] ?> </li>
                     <li>Last Blood Donation Date:</b><?php echo $_SESSION['last_dondate'] ?> </li>
@@ -185,25 +188,29 @@
           include 'connect.php';
 
           
-          $stmt = $con->prepare("select p.ID,Firstname, Lastname, phone_number, r.blood_group, r.blood_type, r.location,r.donation_date, r.donation_time from person as p join bloodrequest as r on p.ID = r.PID where (select count(*) from donations as d where d.PID = p.ID and d.donation_date = r.donation_date)=0 and r.blood_group = ?");
-          $stmt->bind_param("s",$_SESSION['blood_grp']);
+          $stmt = $con->prepare("select p.ID,Firstname, Lastname, phone_number, r.blood_group, r.blood_type, r.location,r.donation_date, r.donation_time, 
+                                  (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) +
+                                         sin(radians(?)) * sin(radians(latitude)))) AS distance from person as p
+                                 join bloodrequest as r on p.ID = r.PID where (select count(*) from donations as d where d.PID = p.ID and d.donation_date = r.donation_date)=0 
+                                 and r.blood_group = ? order by distance");
+          $stmt->bind_param("ddds",$_SESSION['latitude'], $_SESSION['longitude'],$_SESSION['latitude'],$_SESSION['blood_grp']);
           $stmt->execute();
 
           $result = $stmt->get_result();
 
           if($result->num_rows>0)
           {
-            //if ($result->num_rows > 0) {
-                // Output the data in a table format
-                //echo "<table>";
-                //echo "<tr><th> First Name </th><th>  Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>    Donation Location  </th><th>    Donation Date  </th><th>    Donation Time </th><th>    Blood Type  </th></tr>";
+            if ($result->num_rows > 0) {
+                // data in table format
+                 echo "<table>";
+                 echo "<tr><th> First Name </th><th>  Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>    Donation Location  </th><th>    Donation Date  </th><th>    Donation Time </th><th>    Blood Type  </th></tr>";
                 
                 // Fetch and output each row of data
                 while ($row = $result->fetch_assoc()) {
                    // if($row['engaged']==true)
                      //  continue;
-                    echo "<table>";
-                    echo "<tr><th> First Name </th><th>  Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>    Donation Location  </th><th>    Donation Date  </th><th>    Donation Time </th><th>    Blood Type  </th></tr>";
+                   // echo "<table>";
+                    //echo "<tr><th> First Name </th><th>  Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>    Donation Location  </th><th>    Donation Date  </th><th>    Donation Time </th><th>    Blood Type  </th></tr>";
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['Firstname']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Lastname']) . "</td>";
@@ -225,9 +232,9 @@
 
                     echo "</tr>";
                 
-                
-                echo "</table>";
             }
+            echo "</table>";
+        }
          } else {
                 echo "No results found.";
             }
