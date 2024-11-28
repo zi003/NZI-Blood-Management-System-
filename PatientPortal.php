@@ -53,7 +53,7 @@
             <!-- My Profile Page -->
             <!--<div id="patientProfile" class="page">-->
             <?php if($page == "dashboard"): ?>
-                <h2>My Profile</h2>
+                <h2>Patient Profile</h2>
                 <br> </br>
                 <ul>
                     <li>Name: <?php echo $_SESSION['name']  ?></li>

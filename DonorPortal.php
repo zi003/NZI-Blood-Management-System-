@@ -57,15 +57,25 @@
         
             <!-- My Profile (Dashboard) Page -->
              <?php if($page == "dashboard"): ?>
-                <h2>My Profile</h2>
+                <h2>Donor Profile</h2>
                 <br> </br>
                 <ul>
-                    <li>Name:<?php echo $_SESSION['name'] ?> </li>
-                    <li>Phone Number: <?php echo $_SESSION['phone_num'] ?></li>
-                    <li>Blood Group: <?php echo $_SESSION['blood_grp'] ?></li>
+                    <li>Name:<?php echo $_SESSION['name'] ?></li>
+                    <li>Phone Number: <?php echo $_SESSION['phone_num']; ?> 
+                    <!-- For the button of Edit contact-->
+                    <button id="edit-phone-btn" onclick="toggleEditPhone()">Edit Phone</button>
+                     <div id="phone-edit-section" style="display: none;">
+                       <input type="text" id="new-phone-number" placeholder="Enter new phone number">
+                              <button id="add-phone-btn" onclick="addPhoneNumber()">Add Number</button>
+                             </div>
+    
+                   
+                    <li>Blood Group:<?php echo $_SESSION['blood_grp'] ?></li>
                     <li>Location:<?php echo $_SESSION['location'] ?> </li>
-                    <li>Last Blood Donation Date:<?php echo $_SESSION['last_dondate'] ?> </li>
+                    <li>Last Blood Donation Date:</b><?php echo $_SESSION['last_dondate'] ?> </li>
                 </ul>
+              
+                
                 <br> <br>
                 <h3>Upcoming Donations:</h3>
                 <br></br>
@@ -140,6 +150,7 @@
                         echo "<td>" . htmlspecialchars($row['blood_type']) . "</td>";
     
                         echo "<td>";
+                       
                         echo "<form action='donate.php' method='post'>";
                         echo "<input type='hidden' name='patient_id' value='" . htmlspecialchars($row['ID']) . "'>";
                         echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
@@ -250,5 +261,31 @@
             
         }
     </script>
+    <!-- For the button of Edit contact-->
+    <script>
+    function toggleEditPhone() {
+        const phoneEditSection = document.getElementById('phone-edit-section');
+        const editPhoneBtn = document.getElementById('edit-phone-btn');
+
+        if (phoneEditSection.style.display === 'none') {
+            phoneEditSection.style.display = 'block';
+            editPhoneBtn.textContent = 'Cancel';
+        } else {
+            phoneEditSection.style.display = 'none';
+            editPhoneBtn.textContent = 'Edit Phone';
+        }
+    }
+
+    function addPhoneNumber() {
+        const newPhone = document.getElementById('new-phone-number').value;
+        if (newPhone) {
+            document.getElementById('phone-display').textContent = newPhone;
+            toggleEditPhone(); // Hide the input field after adding
+        } else {
+            alert('Please enter a valid phone number.');
+        }
+    }
+</script>
+
 </body>
 </html>
