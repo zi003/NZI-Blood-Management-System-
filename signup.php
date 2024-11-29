@@ -28,7 +28,7 @@ ini_set('display_errors', 1);
     }
       /*Finding latitude and longitude of person*/
       
-      $address = urlencode($location." Dhaka Bangladesh");
+      $address = urlencode($location." Bangladesh");
       $url = "https://nominatim.openstreetmap.org/search?format=json&q={$address}";
 
       //adding header so that the website knows who I am

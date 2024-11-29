@@ -100,8 +100,13 @@
                     echo "<td>" . htmlspecialchars($row['donation_time']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['location']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['blood_type']) . "</td>";
+                    echo "<td>";
+                    echo "<form action='message(D).php' method='post'>";
+                    echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
+                    echo "<input type='submit' value='Message'>";
+                    echo "</form>";
+                    echo "</td>";
                     echo "</tr>";
-                
 
                    }
                    echo "</table>";

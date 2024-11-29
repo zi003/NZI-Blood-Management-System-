@@ -141,6 +141,19 @@
                     echo "</form>";
                     echo "</td>";
                    
+                    echo "<td>";
+                    echo "<form action='message(D).php' method='post'>";
+                    echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
+                    echo "<input type='submit' value='Message'>";
+                    echo "</form>";
+                    echo "</td>";
+
+                    echo "<td>";
+                    echo "<form action='report.php' method='post'>";
+                    echo "<input type='hidden' name='report_id' value='" . htmlspecialchars($row['ID']) . "'>";
+                    echo "<input type='submit' value='Report'>";
+                    echo "</form>";
+                    echo "</td>";
                     echo "</tr>";
 
                    }

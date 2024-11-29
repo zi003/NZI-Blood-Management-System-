@@ -70,14 +70,32 @@
      $stmt->bind_param("ii",$patient_id,$donor_id);
      $stmt->execute();
      $stmt->close();
-     $con->close();
+     
+     
+     $stmt = $con->prepare("select count(*) from bloodrequest as br left join donations as d on (br.PID = d.PID) where PID = ? and br.donation_date = d.donation_date and DID is null");
+     $stmt->bind_param("i",$patient_id);
+     $stmt->execute();
+     $stmt->bind_result($res);
+     $stmt->fetch();
+     $stmt->close();
 
+     if($res==0)
+     {
+      $stmt = $con->prepare("delete from requestdonor where PID = ?");
+      $stmt->bind_param("i",$patient_id);
+      $stmt->execute();
+     }
+    
+     $stmt->close();
+     $con->close();
      echo'<script>
        
        alert("Successfully chosen donor for donation!");
        window.location.href = "DonorPortal.php";
 
      </script>';
+
+
 
      exit();
     }
