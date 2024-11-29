@@ -10,7 +10,7 @@
    $stmt->execute();
    $stmt->close();
 
-   $stmt = $con->prepare("delete from donation where DID = ?");
+   $stmt = $con->prepare("delete from donations where DID = ?");
    $stmt->bind_param("i",$report_id);
    $stmt->execute();
    $stmt->close();
@@ -23,6 +23,6 @@
    echo '<script>
 
         alert("The Donor has been blocked");
-
-       </script>;';
+        window.location.href = "PatientPortal.php"
+       </script>';
 ?>

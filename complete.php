@@ -32,8 +32,8 @@
   $stmt->close();
 
 
-  $stmt = $con->prepare("delete from message where (SID = ? and RID = ?) or (RID = ? and DID = ?)");
-  $stmt->bind_param("ssi",$patient_id, $donor_id,$patient_id, $donor_id);
+  $stmt = $con->prepare("delete from messages where (SID = ? and RID = ?) or (RID = ? and SID = ?)");
+  $stmt->bind_param("iiii",$patient_id, $donor_id,$patient_id, $donor_id);
   $stmt->execute();
   $stmt->close();
 

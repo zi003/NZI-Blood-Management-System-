@@ -72,7 +72,7 @@
      $stmt->close();
      
      
-     $stmt = $con->prepare("select count(*) from bloodrequest as br left join donations as d on (br.PID = d.PID) where PID = ? and br.donation_date = d.donation_date and DID is null");
+     $stmt = $con->prepare("select count(*) from bloodrequest as br left join donations as d on (br.PID = d.PID) where br.PID = ? and br.donation_date = d.donation_date and DID is null");
      $stmt->bind_param("i",$patient_id);
      $stmt->execute();
      $stmt->bind_result($res);
