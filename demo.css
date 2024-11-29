@@ -10,63 +10,61 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f4;
+    background-color: #111; /* Black background */
 }
 
 .container {
     display: flex;
     width: 80%;
     height: 80vh;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5); /* Red glow shadow */
     border-radius: 8px;
     overflow-y: scroll;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
 .sidebar {
     width: 25%;
-    background-color: #3498db;
+    background-color: #990000; /* Dark red */
     color: #fff;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+    animation: slideInLeft 1.5s ease-out;
 }
 
 .sidebar h2 {
     margin-bottom: 20px;
+    animation: bounceText 1.5s infinite;
 }
 
 .sidebar button {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
-    background-color: #2980b9;
+    background-color: #cc0000; /* Brighter red */
     border: none;
     color: #fff;
     cursor: pointer;
     border-radius: 5px;
     font-size: 16px;
+    transition: all 0.3s ease-in-out;
 }
 
 .sidebar button:hover {
-    background-color: #1c5980;
+    background-color: #ff0000; /* Bright red */
+    transform: scale(1.1);
 }
 
 .content {
     width: 75%;
     padding: 20px;
-    background-color: #fff;
+    background-color: #222; /* Dark blackish background */
+    color: #fff;
     overflow-y: scroll;
-}
-
-.page {
-    display: none;
-}
-
-.page h2 {
-    margin-bottom: 15px;
-    color: #333;
+    animation: fadeIn 2s ease-in-out;
 }
 
 ul {
@@ -77,59 +75,71 @@ ul {
 ul li {
     margin-bottom: 10px;
     padding: 10px;
-    background-color: #f9f9f9;
+    background-color: #550000; /* Dark red for list background */
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: transform 0.3s;
+}
+
+ul li:hover {
+    transform: scale(1.05);
+    background-color: #770000; /* Lighter red on hover */
 }
 
 form label {
     display: block;
     margin-top: 10px;
-    color: #333;
+    color: #ffcccc; /* Light red for labels */
 }
 
 form input, form select {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #990000; /* Dark red border */
     border-radius: 4px;
+    background-color: #333; /* Dark input background */
+    color: #fff;
 }
 
 form button {
     margin-top: 15px;
     padding: 10px;
     width: 100%;
-    background-color: #3498db;
+    background-color: #cc0000; /* Bright red */
     color: #fff;
     border: none;
     cursor: pointer;
     border-radius: 5px;
     font-size: 16px;
+    transition: all 0.3s ease-in-out;
 }
 
 form button:hover {
-    background-color: #2980b9;
+    background-color: #ff3333; /* Lighter red */
+    transform: scale(1.1);
 }
 
 button {
     padding: 5px 10px;
-    background-color: #3498db;
+    background-color: #cc0000; /* Brighter red */
     color: #fff;
     border: none;
     cursor: pointer;
     border-radius: 3px;
+    transition: all 0.3s ease-in-out;
 }
 
 button:hover {
-    background-color: #2980b9;
+    background-color: #ff3333; /* Light red on hover */
+    transform: scale(1.1);
 }
 
 /* Styling headers */
 .content th {
-    background-color: #4CAF50;
+    background-color: #cc0000; /* Bright red header */
     color: white;
     padding: 10px;
     text-align: left;
@@ -138,13 +148,13 @@ button:hover {
 /* Styling table rows */
 .content td {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #550000; /* Dark red border */
     text-align: center;
 }
 
 /* Adding hover effect on rows */
 .content tr:hover {
-    background-color: #f1f1f1;
+    background-color: #770000; /* Light red on hover */
 }
 
 /* Center align the action button */
@@ -156,12 +166,42 @@ button:hover {
 .content input[type="submit"] {
     padding: 6px 12px;
     color: #fff;
-    background-color: #4CAF50;
+    background-color: #cc0000; /* Bright red */
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
 }
 
 .content input[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #ff3333; /* Light red */
+    transform: scale(1.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes bounceText {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
