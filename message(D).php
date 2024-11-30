@@ -117,6 +117,7 @@ $result = $stmt->get_result();
             padding: 15px;
             border-top: 1px solid #ddd;
             background-color: #f9f9f9;
+            align-items: center;
         }
 
         .input-container input {
@@ -125,7 +126,7 @@ $result = $stmt->get_result();
             border: 1px solid #ddd;
             border-radius: 20px;
             margin-right: 10px;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         .input-container button {
@@ -136,6 +137,7 @@ $result = $stmt->get_result();
             border-radius: 20px;
             font-size: 1rem;
             cursor: pointer;
+            margin-left: 10px;
         }
 
         .input-container button:hover {
