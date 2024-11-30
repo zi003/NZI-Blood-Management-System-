@@ -3,7 +3,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    background-color: #121212; /* Dark background for body */
+    color: #e0e0e0; /* Light text color for readability */
 }
 
 /* Center the form container */
@@ -12,16 +13,16 @@ body {
     max-width: 400px;
     margin: 100px auto;
     padding: 20px;
-    background: #ffffff;
+    background: #1e1e1e; /* Dark background for the form container */
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Darker shadow for depth */
     text-align: center;
 }
 
 /* Form title */
 h2 {
     margin-bottom: 20px;
-    color: #333;
+    color: #fff; /* White color for title */
 }
 
 /* Label styling */
@@ -30,7 +31,7 @@ label {
     text-align: left;
     margin-bottom: 8px;
     font-size: 14px;
-    color: #666;
+    color: #bbb; /* Lighter gray for labels */
 }
 
 /* Input styling */
@@ -38,15 +39,17 @@ input[type="text"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
-    border: 1px solid #ddd;
+    border: 1px solid #444; /* Dark border */
     border-radius: 5px;
     font-size: 16px;
+    background-color: #333; /* Dark background for input */
+    color: #fff; /* White text for input */
     box-sizing: border-box;
 }
 
 /* Button styling */
 button {
-    background-color: #5cb85c;
+    background-color: #444; /* Dark button background */
     color: white;
     padding: 10px 20px;
     border: none;
@@ -58,5 +61,5 @@ button {
 
 /* Button hover effect */
 button:hover {
-    background-color: #4cae4c;
+    background-color: #555; /* Darker shade on hover */
 }
