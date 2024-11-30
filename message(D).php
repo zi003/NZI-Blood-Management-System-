@@ -44,7 +44,7 @@ $result = $stmt->get_result();
         /*styling the chats */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color  #333;
             margin: 0;
             padding: 0;
         }
@@ -115,7 +115,7 @@ $result = $stmt->get_result();
 
         .input-container {
             display: flex;
-            padding: 15px;
+            padding: 35px;
             border-top: 1px solid #ddd;
             background-color: #f9f9f9;
             align-items: center;
@@ -124,7 +124,7 @@ $result = $stmt->get_result();
 
         .input-container input {
             flex: 1;
-            padding: 15px;
+            padding: 35px;
             border: 1px solid #ddd;
             border-radius: 20px;
            
@@ -132,11 +132,11 @@ $result = $stmt->get_result();
         }
 
         .input-container button {
-            padding: 15px 25px;
+            padding: 35px 40px;
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 20px;
+            border-radius: 30px;
             font-size: 1rem;
             cursor: pointer;
             margin-left: 10px;
