@@ -26,7 +26,7 @@ $_SESSION['receiver_name'] = $person_firstname. " " .$person_lastname;
 $stmt->close();
 
 //retrieving receiver, sender id, message where the id pair match
-$stmt =  $con->prepare("select RID, SID, message, time_stamp from messages where (RID = ? and SID = ?) or (SID = ? and RID = ?) order by time_stamp desc");
+$stmt =  $con->prepare("select RID, SID, message, time_stamp from messages where (RID = ? and SID = ?) or (SID = ? and RID = ?) order by time_stamp");
 $stmt->bind_param("iiii",$_SESSION['id'],$person_id, $_SESSION['id'], $person_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -57,7 +57,7 @@ $result = $stmt->get_result();
             border-radius: 8px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            height: 70vh; /* Full height of the viewport */
+            height: 70vh; /* height of the viewport */
             display: flex;
             flex-direction: column reverse;
             justify-content: center; /* Vertically center content */
@@ -69,6 +69,7 @@ $result = $stmt->get_result();
             display: flex;
             flex-direction: column;
             overflow-y: auto;
+            
         }
 
         .message {
@@ -109,7 +110,7 @@ $result = $stmt->get_result();
 
         .time {
             font-size: 0.8rem;
-            color: gray;
+            color: darkgray;
             margin-top: 5px;
             text-align: right;
         }
@@ -160,7 +161,7 @@ $result = $stmt->get_result();
                     if ($row['SID'] == $_SESSION['id'] && $row['RID']== $person_id) { 
                         echo "<div class='message sent'>"; 
                         echo "<div class='message-header'>";
-                        echo "<span>You:</span>"; 
+                        echo "<span>You:  </span>"; 
                         echo "<span class='time'>" . date('h:i A', strtotime($row['time_stamp'])) . "</span>";
                         echo "</div>";
                         echo "<div class='message-body'>" . htmlspecialchars($row['message']) . "</div>";

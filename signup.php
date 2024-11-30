@@ -118,7 +118,7 @@ ini_set('display_errors', 1);
             }
 
         $mail->send();
-
+         
         echo '<script>
         
          alert("Registration Succesful, You have been mailed! Log in to continue");
