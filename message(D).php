@@ -57,7 +57,7 @@ $result = $stmt->get_result();
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             height: 100vh; /* Full height of the viewport */
-         display: flex;
+            display: flex;
             flex-direction: column;
         }
 

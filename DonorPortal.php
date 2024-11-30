@@ -180,7 +180,8 @@
             <?php elseif($page == "patientList"): ?>
                 <h2>Patient List</h2>
                 <br></br>
-                
+                 **The patients are sorted based on location from nearest to furthest 
+                 <br>
                
                 <!--
                 <ul>
