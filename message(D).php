@@ -50,7 +50,7 @@ $result = $stmt->get_result();
         }
 
         .chat-container {
-            max-width: 100%;
+            max-width: 600px;
             margin: 0px auto;
             background-color: #fff;
             border-radius: 8px;
@@ -59,6 +59,7 @@ $result = $stmt->get_result();
             height: 100vh; /* Full height of the viewport */
          display: flex;
             flex-direction: column;
+            justify-content: center; /* Vertically center content */
         }
 
         .chat-box {
@@ -76,7 +77,7 @@ $result = $stmt->get_result();
             position: relative;
             display: inline-block;
             flex-direction: column;
-            max-width: 70%;
+            max-width: 100%;
         }
 
         .sent {
@@ -88,7 +89,7 @@ $result = $stmt->get_result();
 
         .received {
             background-color:  #ff4d4d;
-            color: black;
+            color:white ;
             align-self: flex-start;
             margin-right: auto;
         }
@@ -118,19 +119,20 @@ $result = $stmt->get_result();
             border-top: 1px solid #ddd;
             background-color: #f9f9f9;
             align-items: center;
+            max-width: 100%;
         }
 
         .input-container input {
             flex: 1;
-            padding: 10px;
+            padding: 15px;
             border: 1px solid #ddd;
             border-radius: 20px;
-            margin-right: 10px;
-            font-size: 1.1rem;
+           
+            font-size: 1rem;
         }
 
         .input-container button {
-            padding: 10px 15px;
+            padding: 15px 25px;
             background-color: #007bff;
             color: white;
             border: none;
