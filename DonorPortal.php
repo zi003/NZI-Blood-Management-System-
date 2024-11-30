@@ -4,6 +4,7 @@
 
     include "connect.php";
 
+    //checking for requests made to this donor
     $stmt =  $con->prepare("select count(*) from requestdonor where DID = ?");
     $stmt->bind_param("i",$_SESSION['id']);
     $stmt->execute();
@@ -79,7 +80,7 @@
                 <?php 
 
                    include 'connect.php';
-
+                   //retrieving the details of patient by joining patient, bloodrequest and person tables 
                    $stmt = $con->prepare("select p.Firstname, p.Lastname, p.phone_number, don.PID, br.donation_date, br.donation_time, br.location, br.blood_type from donor as d join donations as don on (d.id = don.DID) join bloodrequest as br on (br.PID = don.PID) join person as p on (br.PID = p.ID) where don.DID = ? and don.donation_date = br.donation_date");
                    $stmt->bind_param("i",$_SESSION['id']);
                    $stmt->execute();
@@ -103,7 +104,7 @@
                     echo "<td>";
                     echo "<form action='message(D).php' method='post'>";
                     echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
-                    echo "<input type='submit' value='Message'>";
+                    echo "<input type='submit' value='Message'>"; //option to send message to patient
                     echo "</form>";
                     echo "</td>";
                     echo "</tr>";
@@ -128,7 +129,7 @@
                 <?php
                  
                  include "connect.php";
-
+                 //retrieving blood requests sent to donor which havent been accepted by any other donor
                  $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, br.donation_date, br.donation_time, br.location, br.blood_type, br.blood_group from requestdonor as rd join bloodrequest as br on (rd.PID = br.PID) join person as p on (rd.PID = p.ID) where rd.DID = ? and (select count(*) from donations where PID = p.ID and donation_date = br.donation_date) = 0 ");
                  $stmt->bind_param("i",$_SESSION['id']);
                  $stmt->execute();
@@ -183,17 +184,12 @@
                  **The patients are sorted based on location from nearest to furthest 
                  <br>
                
-                <!--
-                <ul>
-                    <li>
-                        <span>Jane Doe (Blood Group: O+)</span>
-                        <button>Donate</button>
-                    </li> -->
+                
         <?php
          
           include 'connect.php';
 
-          
+          //retrieving info of those patients whose donation are not yet accepted, they are sorted based on their location using the Spherical Laws of cosines formula
           $stmt = $con->prepare("select p.ID,Firstname, Lastname, phone_number, r.blood_group, r.blood_type, r.location,r.donation_date, r.donation_time, 
                                   (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) +
                                          sin(radians(?)) * sin(radians(latitude)))) AS distance from person as p
@@ -213,10 +209,7 @@
                 
                 // Fetch and output each row of data
                 while ($row = $result->fetch_assoc()) {
-                   // if($row['engaged']==true)
-                     //  continue;
-                   // echo "<table>";
-                    //echo "<tr><th> First Name </th><th>  Last Name  </th><th>    Blood Group  </th><th>    Contact Number  </th><th>    Donation Location  </th><th>    Donation Date  </th><th>    Donation Time </th><th>    Blood Type  </th></tr>";
+                  
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['Firstname']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['Lastname']) . "</td>";
@@ -248,7 +241,6 @@
             $con->close();
         
        ?>
-                    <!-- More donors can be added similarly -->
                 </ul>
             <?php endif; ?>
            
@@ -257,18 +249,14 @@
 
        
     <script>
-       /* function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
-            document.getElementById(pageId).style.display = 'block';
-        }*/
-
+        //logout function
         function logout() {
             alert("You have logged out.");
             window.location.href = "Logout.php";
             
         }
     </script>
-    <
+    
 
 </body>
 </html>

@@ -10,6 +10,7 @@ require 'phpmailer/src/SMTP.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+  //receiving all info from the html form submitted 
   $firstname = $_POST['first-name'];
   $lastname = $_POST['last-name'];
   $password = $_POST['password'];
@@ -39,6 +40,8 @@ ini_set('display_errors', 1);
        ];
 
       $context = stream_context_create($options);
+      
+      //http request sent to the website
       $response = file_get_contents($url, false, $context);
 
       if($response){
@@ -50,12 +53,13 @@ ini_set('display_errors', 1);
 
       }
       }
-
+      //inserting into the person table
       $stmt = $con->prepare("insert into person (Firstname, Lastname, password, blood_group, phone_number, email_address, person_type,location, latitude, longitude) VALUES (?,?,?,?,?,?,?,?,?,?)");
       $stmt->bind_param("ssssssssdd",$firstname,$lastname,$hashed_password,$bloodgroup,$phonenumber,$emailaddress,$person_type,$location,$latitude, $longitude);
       $stmt->execute();
 
       $id = $con->insert_id;
+      //inserting exclusive attributes in donor/patient tables
       if($person_type == "Donor"){
         $last_donation_date = $_POST['DOD'];
         $last_bloodtype_donate = $_POST['bloodType'];
@@ -71,12 +75,11 @@ ini_set('display_errors', 1);
 
      if($stmt->execute()){
         
-        /*
         //mail to user for successfully logging in
-        $mail = new PHPMailer(true);
+        $mail = new PHPMailer(true);   //php mailer library used 
         $mail -> isSMTP();
 
-        $mail->Host = 'smtp.gmail.com';
+        $mail->Host = 'smtp.gmail.com';  //gmail's SMTP server used to send the mail
         $mail->SMTPAuth = true;
         $mail->Username = 'zuhayer.islam@northsouth.edu';
         $mail-> Password = 'afbu erwb ekqd aqqu';
@@ -88,6 +91,7 @@ ini_set('display_errors', 1);
 
         $mail->isHTML(true);
 
+        //mail varies depending on the type of person
         if($person_type == "Donor"){
         $mail->Subject = "NZI Blood Management Donor Registration Successful!";
         
@@ -114,7 +118,7 @@ ini_set('display_errors', 1);
             }
 
         $mail->send();
-        */
+
         echo '<script>
         
          alert("Registration Succesful, You have been mailed! Log in to continue");

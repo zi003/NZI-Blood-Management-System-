@@ -25,7 +25,7 @@ $_SESSION['receiver_id'] = $person_id;
 $_SESSION['receiver_name'] = $person_firstname. " " .$person_lastname; 
 $stmt->close();
 
-
+//retrieving receiver, sender id, message where the id pair match
 $stmt =  $con->prepare("select RID, SID, message, time_stamp from messages where (RID = ? and SID = ?) or (SID = ? and RID = ?) order by time_stamp desc");
 $stmt->bind_param("iiii",$_SESSION['id'],$person_id, $_SESSION['id'], $person_id);
 $stmt->execute();
@@ -153,7 +153,7 @@ $result = $stmt->get_result();
             
             <?php
              if($result->num_rows>0){
-                
+                //displaying the conversation 
                 while($row = $result->fetch_assoc()){
 
                     if ($row['SID'] == $_SESSION['id'] && $row['RID']== $person_id) { 
