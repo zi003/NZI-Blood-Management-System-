@@ -44,21 +44,22 @@ $result = $stmt->get_result();
         /*styling the chats */
         body {
             font-family: Arial, sans-serif;
-            background-color  #333;
+            background-color: #333;
             margin: 0;
             padding: 0;
         }
 
         .chat-container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0px auto;
+            margin-top: 50px; 
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            height: 100vh; /* Full height of the viewport */
+            height: 70vh; /* Full height of the viewport */
             display: flex;
-            flex-direction: column;
+            flex-direction: column reverse;
             justify-content: center; /* Vertically center content */
         }
 
