@@ -216,7 +216,9 @@
             <?php elseif($page == "donorList"): ?>
            <!-- <div id="donorList" class="page" style="display:none;">-->
                 <h2>Donor List</h2>
-               
+                 <br></br>
+                 **The donors are sorted based on location from nearest to furthest 
+                 <br>
                 <br></br>
                 <?php
 
