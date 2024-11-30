@@ -10,168 +10,137 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f4;
+    background-color: #111; /* Black background */
 }
 
 .container {
     display: flex;
     width: 80%;
     height: 80vh;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 15px rgba(0, 0, 255, 0.5); /* Blue glow shadow */
     border-radius: 8px;
     overflow: hidden;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
 .sidebar {
     width: 25%;
-    background-color: #2c3e50; /* Darker background to match red-black theme */
+    background-color: #1a1f36; /* Dark blue */
     color: #fff;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px; /* Increase spacing */
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    gap: 15px;
+    animation: slideInLeft 1.5s ease-out;
 }
 
 .sidebar h2 {
     margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
+    animation: bounceText 1.5s infinite;
 }
 
 .sidebar button {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
-    background-color: #000; /* Black background */
+    background-color: #1f4b99; /* Blue */
     border: none;
     color: #fff;
     cursor: pointer;
     border-radius: 5px;
     font-size: 16px;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: all 0.3s ease-in-out;
 }
 
 .sidebar button:hover {
-    background-color: #ff0000; /* Red background */
-    transform: scale(1.1); /* Slight zoom effect */
-    color: #fff;
+    background-color: #3385ff; /* Lighter blue */
+    transform: scale(1.1);
+    color: #111;
 }
 
 .content {
     width: 75%;
     padding: 20px;
-    background-color: #fff;
+    background-color: #222; /* Darker background */
+    color: #fff;
     overflow-y: scroll;
-}
-
-.page {
-    display: none;
-}
-
-.page h2 {
-    margin-bottom: 15px;
-    color: #333;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
+    animation: fadeIn 2s ease-in-out;
 }
 
 ul li {
     margin-bottom: 10px;
     padding: 10px;
-    background-color: #f9f9f9;
+    background-color: #1a273f; /* Darker blue */
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: transform 0.3s;
 }
 
-button {
-    padding: 5px 10px;
-    background-color: #3498db;
+ul li:hover {
+    transform: scale(1.05);
+    background-color: #2b3e5c; /* Lighter blue on hover */
+}
+
+form input, form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #1f4b99; /* Blue border */
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+}
+
+form button {
+    margin-top: 15px;
+    padding: 10px;
+    width: 100%;
+    background-color: #3385ff; /* Light blue */
     color: #fff;
     border: none;
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
 }
 
-button:hover {
-    background-color: #2980b9;
+form button:hover {
+    background-color: #6699ff; /* Brighter blue */
+    transform: scale(1.1);
 }
 
-.content #dashboard table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    
-}
-
-/* Styling table headers */
-.content #dashboard th {
-    background-color: #4CAF50;
+/* Styling headers */
+.content th {
+    background-color: #1f4b99;
     color: white;
     padding: 10px;
     text-align: left;
 }
 
-/* Styling table rows */
-.content #dashboard td {
+.content td {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #1a273f;
     text-align: center;
 }
 
-/* Adding hover effect on rows */
-.content #dashboard tr:hover {
-    background-color: #f1f1f1;
+.content tr:hover {
+    background-color: #2b3e5c;
 }
-
-/* Center align the action button */
-.content #dashboard td form {
-    display: inline-block;
-}
-
-/* Styling the button */
-.content #dashboard input[type="submit"] {
-    padding: 6px 12px;
-    color: #fff;
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 10px;
-}
-
-.content #dashboard input[type="submit"].button-accept{
-
-    background-color: green;
-}
-.content #dashboard input[type="submit"].button-reject{
-
-    background-color: red;
-}
-.content #dashboard input[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-/** adding badge to see the number of requests **/
 .button-with-badge {
     position: relative;
     display: inline-block;
-    width: 100%;
+    width: 100%; /* Full button width */
+    text-align: center;
 }
+
 .badge {
     position: absolute;
-    top: 50%;
-    right: 15px;
-    transform: translateY(-50%);
+    top: -5px; /* Adjust vertical alignment */
+    right: 20px; /* Adjust horizontal alignment */
+    transform: translateY(0%);
     background-color: red;
     color: white;
     font-size: 12px;
@@ -184,30 +153,87 @@ button:hover {
     font-weight: bold;
     min-width: 20px;
     padding: 0 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
 }
-.sidebar button {
-    animation: buttonSlideIn 1s ease-in-out;
+/* Styling the table */
+.content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #1a273f; /* Dark blue for table background */
+    color: #fff;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-@keyframes buttonSlideIn {
+/* Styling table headers */
+.content th {
+    background-color: #1f4b99; /* Blue for header background */
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* Styling table rows */
+.content td {
+    padding: 10px;
+    border: 1px solid #2b3e5c; /* Light blue for row borders */
+    text-align: center;
+}
+
+/* Adding hover effect on rows */
+.content tr:hover {
+    background-color: #2b3e5c; /* Lighter blue on hover */
+}
+
+/* Center align the action button */
+.content td form {
+    display: inline-block;
+}
+
+/* Styling table buttons */
+.content input[type="submit"] {
+    padding: 6px 12px;
+    color: #fff;
+    background-color: #3385ff; /* Blue */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.content input[type="submit"]:hover {
+    background-color: #6699ff; /* Lighter blue */
+    transform: scale(1.1);
+}
+
+
+@keyframes fadeIn {
     from {
-        transform: translateX(-50px);
         opacity: 0;
     }
     to {
-        transform: translateX(0);
         opacity: 1;
     }
 }
-button {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
 }
 
-button:hover {
-    background-color: #0056b3;
+@keyframes bounceText {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }

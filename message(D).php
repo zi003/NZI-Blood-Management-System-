@@ -50,17 +50,22 @@ $result = $stmt->get_result();
         }
 
         .chat-container {
-            max-width: 600px;
-            margin: 50px auto;
+            max-width: 100%;
+            margin: 0px auto;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            height: 100vh; /* Full height of the viewport */
+         display: flex;
+            flex-direction: column;
         }
 
         .chat-box {
+            flex: 1; /* Take up available space */
             padding: 20px;
-            max-height: 400px;
+            display: flex;
+            flex-direction: column;
             overflow-y: auto;
         }
 
@@ -69,7 +74,7 @@ $result = $stmt->get_result();
             margin-bottom: 15px;
             border-radius: 10px;
             position: relative;
-            display: flex;
+            display: inline-block;
             flex-direction: column;
             max-width: 70%;
         }
@@ -78,12 +83,14 @@ $result = $stmt->get_result();
             background-color: #007bff;
             color: white;
             align-self: flex-end;
+            margin-left: auto; 
         }
 
         .received {
-            background-color: #e9ecef;
+            background-color:  #ff4d4d;
             color: black;
             align-self: flex-start;
+            margin-right: auto;
         }
 
         .message-header {
@@ -101,6 +108,8 @@ $result = $stmt->get_result();
         .time {
             font-size: 0.8rem;
             color: gray;
+            margin-top: 5px;
+            text-align: right;
         }
 
         .input-container {
