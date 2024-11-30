@@ -26,8 +26,8 @@ $_SESSION['receiver_name'] = $person_firstname. " " .$person_lastname;
 $stmt->close();
 
 
-$stmt =  $con->prepare("select RID, SID, message, time_stamp from messages where RID = ? or SID = ? order by time_stamp desc");
-$stmt->bind_param("ii",$_SESSION['id'], $_SESSION['id']);
+$stmt =  $con->prepare("select RID, SID, message, time_stamp from messages where (RID = ? and SID = ?) or (SID = ? and RID = ?) order by time_stamp desc");
+$stmt->bind_param("iiii",$_SESSION['id'],$person_id, $_SESSION['id'], $person_id);
 $stmt->execute();
 $result = $stmt->get_result();
 

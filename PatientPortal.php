@@ -61,7 +61,7 @@
                     <li>Blood Group:<?php echo $_SESSION['blood_grp']?> </li>
                     <li>Location:<?php echo $_SESSION['location']?> </li>
                     <li>Patient Type:<?php echo $_SESSION['patient_type']?> </li>
-                    <li></li>
+                    <br></br>
                 </ul>
                 <h3>Pending Requests:</h3>
                 <br></br>

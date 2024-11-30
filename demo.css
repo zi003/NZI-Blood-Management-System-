@@ -15,7 +15,7 @@ body {
 
 .container {
     display: flex;
-    width: 80%;
+    width: 90%;
     height: 80vh;
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.5); /* Red glow shadow */
     border-radius: 8px;
