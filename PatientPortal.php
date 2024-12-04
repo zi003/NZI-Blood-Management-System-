@@ -3,6 +3,8 @@
    
    $id = $_SESSION['id'];
    $con = new mysqli('localhost','root','','nzi blood management system');
+
+   //retrieving result to see if any blood requests where made by this patient
    $stmt = $con->prepare("select b.donation_date from bloodrequest as b where PID = ? and (select count(*) from donations as d join bloodrequest as br on d.PID = br.PID where d.donation_date = b.donation_date) = 0");
    $stmt->bind_param("s",$id);
 
@@ -34,11 +36,11 @@
             <h2>Blood Donation</h2>
             <form method = "post">
             <button type = "submit" name="action" value="dashboard">My Profile</button>
-            <?php if($result->num_rows==0 || $_SESSION['patient_type'] == "Regular"):?>
+            <?php if($result->num_rows==0 || $_SESSION['patient_type'] == "Regular"):?> <!-- If patient has no request or is regular this tab will be avaialble -->
             <button type = "submit" name="action" value="createRequest">Create Requests</button>
             <?php endif; ?>
             <?php if($result->num_rows!=0):?>
-            <button type = "submit" name="action" value="donorList">Donor List</button>
+            <button type = "submit" name="action" value="donorList">Donor List</button> <!--Patients can see donor list once they make a blood request-->
             <?php endif; ?>
             <button type = "button" onclick="logout()">Logout</button>
             </form>
@@ -68,6 +70,7 @@
                 <?php
                  include 'connect.php';
 
+                 //displaying donors who haven't yet accepted request and the request is still valid
                  $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, p.blood_group, br.donation_date, br.donation_time, br.location, br.blood_type from requestdonor as rd join person as p on (rd.DID = p.ID) join bloodrequest as br on (br.PID = rd.PID) where rd.PID = ? and (select count(*) from donations where PID = rd.PID and donation_date = br.donation_date) = 0 ");
                  $stmt->bind_param("i",$_SESSION['id']);
                  $stmt->execute();
@@ -109,7 +112,7 @@
                 <?php 
 
                    include 'connect.php';
-
+                   //displaying upcoming donations' donor details
                    $stmt = $con->prepare("select p.ID, p.Firstname, p.Lastname, p.phone_number, don.PID, br.donation_date, br.donation_time, br.location, br.blood_type from donor as d join donations as don on (d.id = don.DID) join bloodrequest as br on (br.PID = don.PID) join person as p on (don.DID = p.ID) where don.PID = ? and don.donation_date = br.donation_date ");
                    $stmt->bind_param("i",$_SESSION['id']);
                    $stmt->execute();
@@ -137,21 +140,21 @@
                     echo "<input type='hidden' name='donor_id' value='" . htmlspecialchars($row['ID']) . "'>";
                     echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
                     echo "<input type='hidden' name='blood_type' value='" . htmlspecialchars($row['blood_type']) . "'>";
-                    echo "<input type='submit' value='Mark Complete'>";
+                    echo "<input type='submit' value='Mark Complete'>"; //the patient can mark the donation as complete once its done
                     echo "</form>";
                     echo "</td>";
                    
                     echo "<td>";
                     echo "<form action='message(D).php' method='post'>";
                     echo "<input type='hidden' name='donation_date' value='" . htmlspecialchars($row['donation_date']) . "'>";
-                    echo "<input type='submit' value='Message'>";
+                    echo "<input type='submit' value='Message'>"; //the patient can message the donor
                     echo "</form>";
                     echo "</td>";
 
                     echo "<td>";
                     echo "<form action='report.php' method='post'>";
                     echo "<input type='hidden' name='report_id' value='" . htmlspecialchars($row['ID']) . "'>";
-                    echo "<input type='submit' value='Report'>";
+                    echo "<input type='submit' value='Report'>"; //the patient can report a scammer and their id will be blocked
                     echo "</form>";
                     echo "</td>";
                     echo "</tr>";
@@ -223,7 +226,7 @@
                 <?php
 
                   include "connect.php";
-                  
+                  //retrieving eligible donors sorted based on location
                   $stmt = $con->prepare("select p.ID, Firstname, Lastname, phone_number, location, blood_group, 
                                          (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) +
                                          sin(radians(?)) * sin(radians(latitude)))) AS distance
@@ -283,11 +286,7 @@
    <!-- </div>-->
 
     <script>
-      /*  function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
-            document.getElementById(pageId).style.display = 'block';
-        }*/
-
+    
         function logout() {
             alert("You have logged out.");
             window.location.href = "Logout.php";

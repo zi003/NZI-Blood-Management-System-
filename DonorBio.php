@@ -5,6 +5,7 @@
 
  $con = new mysqli('localhost','root','','nzi blood management system');
 
+ //retrieivng info when donor logs in to store in session variables
  $stmt = $con->prepare("select p.ID, Firstname,Lastname, blood_group, phone_number,location, person_type, last_donation_date,blocked, engaged, latitude, longitude from person as p join donor as d on p.ID = d.id where email_address = ?");
  $stmt->bind_param("s",$_SESSION['email']);
 
@@ -14,6 +15,7 @@
 
  if($stmt->fetch())
  { 
+    //checks if the donor has been blocked 
     if($blocked){
          
         echo '<script>

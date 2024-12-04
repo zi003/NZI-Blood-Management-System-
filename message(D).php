@@ -25,8 +25,8 @@ $_SESSION['receiver_id'] = $person_id;
 $_SESSION['receiver_name'] = $person_firstname. " " .$person_lastname; 
 $stmt->close();
 
-
-$stmt =  $con->prepare("select RID, SID, message, time_stamp from messages where (RID = ? and SID = ?) or (SID = ? and RID = ?) order by time_stamp desc");
+//retrieving receiver, sender id, message where the id pair match
+$stmt =  $con->prepare("select RID, SID, message, time_stamp from messages where (RID = ? and SID = ?) or (SID = ? and RID = ?) order by time_stamp");
 $stmt->bind_param("iiii",$_SESSION['id'],$person_id, $_SESSION['id'], $person_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -44,21 +44,22 @@ $result = $stmt->get_result();
         /*styling the chats */
         body {
             font-family: Arial, sans-serif;
-            background-color  #333;
+            background-color: #333;
             margin: 0;
             padding: 0;
         }
 
         .chat-container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0px auto;
+            margin-top: 50px; 
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            height: 100vh; /* Full height of the viewport */
+            height: 70vh; /* height of the viewport */
             display: flex;
-            flex-direction: column;
+            flex-direction: column reverse;
             justify-content: center; /* Vertically center content */
         }
 
@@ -68,6 +69,7 @@ $result = $stmt->get_result();
             display: flex;
             flex-direction: column;
             overflow-y: auto;
+            
         }
 
         .message {
@@ -108,7 +110,7 @@ $result = $stmt->get_result();
 
         .time {
             font-size: 0.8rem;
-            color: gray;
+            color: darkgray;
             margin-top: 5px;
             text-align: right;
         }
@@ -153,13 +155,13 @@ $result = $stmt->get_result();
             
             <?php
              if($result->num_rows>0){
-                
+                //displaying the conversation 
                 while($row = $result->fetch_assoc()){
 
                     if ($row['SID'] == $_SESSION['id'] && $row['RID']== $person_id) { 
                         echo "<div class='message sent'>"; 
                         echo "<div class='message-header'>";
-                        echo "<span>You:</span>"; 
+                        echo "<span>You:  </span>"; 
                         echo "<span class='time'>" . date('h:i A', strtotime($row['time_stamp'])) . "</span>";
                         echo "</div>";
                         echo "<div class='message-body'>" . htmlspecialchars($row['message']) . "</div>";
